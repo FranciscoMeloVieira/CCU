@@ -4,18 +4,18 @@
     "title": "Practices & Routines",
     "icon": "repeat",
     "enabled": true,
-    "shortDescription": "Interrogating everyday habits to reshape how habitual interactions influence ongoing resource consumption.",
-    "detailedDescription": "Sustainable interaction design begins with the acknowledgment that sustainability is not solely an individual calculation, but deeply woven into sociocultural routines. This dimension examines how everyday interaction rituals—from device charging rhythms to shared lab printing—can be scaffolded toward deliberate, restorative habits rather than mindless consumption.",
+    "shortDescription": "Redesign everyday routines (commutes, school runs, shopping, nights out, trips with luggage or kids), not isolated \"green choices\".",
+    "detailedDescription": "Redesign everyday routines (commutes, school runs, shopping, nights out, trips with luggage or kids), not isolated \"green choices\".",
     "keyPrinciples": [
-      "Friction as a reflective pause rather than a usability defect",
-      "Designing for default restorative states and sleep cycles",
-      "Scaffolding incremental habit evolution across community cohorts",
-      "Decoupling perceived productivity from continuous computational churn"
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Sed do eiusmod tempor incididunt",
+      "Ut labore et dolore magna aliqua"
     ],
     "practicalExamples": [
-      "Calm ambient notifications indicating optimal time windows for energy-intensive tasks based on grid renewable capacity.",
-      "Shared maker-space tools that automatically log maintenance intervals and celebrate collaborative tool longevity.",
-      "Contextual standby sequences that gently invite users to disconnect at natural session boundaries."
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+      "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
     ]
   },
   {
@@ -23,18 +23,18 @@
     "title": "Legible Impact",
     "icon": "eye",
     "enabled": true,
-    "shortDescription": "Transforming abstract ecological costs into direct, sensory, and easily interpretable representations.",
-    "detailedDescription": "Most digital interfaces present resource consumption as sterile numbers—kilowatt hours, gigabytes, or megabytes—which lack visceral resonance. Legible Impact emphasizes visceral, sensory, and contextual translation: turning invisible ambient metrics into tangible forms, physical movements, or ambient lighting that evoke immediate intuitive understanding.",
+    "shortDescription": "Make carbon, cost, time, space, health and noise understandable at the moment of decision, without guilt, false precision or greenwashing.",
+    "detailedDescription": "Make carbon, cost, time, space, health and noise understandable at the moment of decision, without guilt, false precision or greenwashing.",
     "keyPrinciples": [
-      "Translating abstract data into embodied metaphors and spatial presence",
-      "Direct spatial proximity between action and ecological consequence",
-      "Transparent communication of hidden computational infrastructure and life cycles",
-      "Avoiding misleading greenwashing or gamified moral tokens"
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Duis aute irure dolor",
+      "Excepteur sint occaecat cupidatat"
     ],
     "practicalExamples": [
-      "A physical mechanical dial that subtly resists rotation as cloud data transfers scale upwards in complexity.",
-      "An ambient water-ripple projection in public hydration stations showing cumulative bottle refills across the building.",
-      "A tactile desktop indicator that gently cools down as background server workloads finish processing."
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Duis aute irure dolor in reprehenderit in voluptate velit esse.",
+      "Excepteur sint occaecat cupidatat non proident."
     ]
   },
   {
@@ -42,18 +42,18 @@
     "title": "Relationships & Commons",
     "icon": "users",
     "enabled": true,
-    "shortDescription": "Fostering collective stewardship and communal sharing mechanisms over individualistic ownership.",
-    "detailedDescription": "Ecological resilience fundamentally relies on healthy commons. Instead of treating users as isolated consumers competing for scarce resources, this dimension explores how interfaces can strengthen mutual responsibility, facilitate peer-to-peer equipment sharing, and foster communal care for shared academic or community infrastructure.",
+    "shortDescription": "Strengthen shared mobility and shared space: bike and car sharing, carpooling, pavements, docks, riders and operators.",
+    "detailedDescription": "Strengthen shared mobility and shared space: bike and car sharing, carpooling, pavements, docks, riders and operators.",
     "keyPrinciples": [
-      "Foregrounding shared dependencies and communal resource thresholds",
-      "Facilitating cooperative repair, borrowing, and tool redistribution networks",
-      "Encouraging social accountability without surveillance or shame",
-      "Strengthening relational ties between people and their living environment"
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Excepteur sint occaecat cupidatat",
+      "Sunt in culpa qui officia deserunt"
     ],
     "practicalExamples": [
-      "A peer-to-peer equipment lending hub with asynchronous digital lockers and repair status logs.",
-      "Collective resource budgeting dashboards in research labs that celebrate joint conservation milestones.",
-      "Community skill-exchange boards embedded directly in university prototyping facilities."
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Excepteur sint occaecat cupidatat non proident.",
+      "Sunt in culpa qui officia deserunt mollit anim id est laborum."
     ]
   },
   {
@@ -61,18 +61,18 @@
     "title": "Durable & Low-Impact Design",
     "icon": "shield-check",
     "enabled": true,
-    "shortDescription": "Prioritizing longevity, modular repairability, bio-compatibility, and minimal energy expenditure.",
-    "detailedDescription": "Every digital artifact embodies a material footprint. Durable and Low-Impact Design insists on physical and digital frugality: selecting renewable or recyclable materials, writing lightweight, efficient code that runs effortlessly on legacy hardware, and ensuring every physical component can be readily disassembled, inspected, repaired, and upgraded.",
+    "shortDescription": "Make the artefact last and consume little: lowenergy, offline-first, reuse stops and Navegante cards, minimal tracking, non-digital where better.",
+    "detailedDescription": "Make the artefact last and consume little: lowenergy, offline-first, reuse stops and Navegante cards, minimal tracking, non-digital where better.",
     "keyPrinciples": [
-      "Design for disassembly, modularity, and open standard fasteners",
-      "Prioritizing passive mechanics and ultra-low-power computing architectures",
-      "Selecting biodegradable casings, non-toxic finishes, and reclaimed materials",
-      "Software durability that resists planned obsolescence and vendor lock-in"
+      "Lorem ipsum dolor sit amet",
+      "Consectetur adipiscing elit",
+      "Sed ut perspiciatis unde omnis",
+      "Natus error sit voluptatem"
     ],
     "practicalExamples": [
-      "Solderless modular sensor enclosures crafted from locally sourced, compostable mycelium composites.",
-      "E-ink and bistable reflective displays requiring zero power when holding a static information frame.",
-      "Fully open-source schematics and modular daughterboards allowing single-component replacement."
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+      "Sed ut perspiciatis unde omnis iste natus error sit.",
+      "Voluptatem accusantium doloremque laudantium."
     ]
   }
 ]

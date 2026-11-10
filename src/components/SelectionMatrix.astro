@@ -1,0 +1,637 @@
+---
+import matrixItems from '../data/selection-matrix.json';
+
+interface AdditionalInfo {
+  label: string;
+  value: string;
+}
+
+export interface NestedDimension {
+  id: string;
+  name: string;
+  anchorId: string;
+  shortDescription: string;
+  detailedDescription: string;
+  additionalInfo?: AdditionalInfo[];
+}
+
+export interface SelectionMatrixItem {
+  id: string;
+  category: string;
+  target: string;
+  description: string;
+  isNested?: boolean;
+  dimensions?: NestedDimension[];
+  additionalInfo?: AdditionalInfo[];
+  linkAnchor?: string | null;
+  linkText?: string | null;
+}
+---
+
+<div class="selection-matrix-wrapper w-full mt-14 pt-12 border-t border-slate-200/80 dark:border-slate-800/80">
+  <!-- Section Sub-Header -->
+  <div class="max-w-2xl mb-8">
+    <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 mb-2">
+      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+      <span>Project Scope &amp; Focus</span>
+    </div>
+    <h3 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white mb-2">
+      Selection Matrix
+    </h3>
+    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+      The core parameters framing our design investigation. Select any connected category to explore its contextual rationale and relevance to the project.
+    </p>
+  </div>
+
+  <!-- Connected Square Matrix (Horizontal on desktop, 2x2 on mobile) -->
+  <div class="matrix-component max-w-5xl mx-auto">
+    <!-- Main Tablist Container: Connected borders between all four squares -->
+    <div
+      role="tablist"
+      aria-label="Selection Matrix categories"
+      class="matrix-tablist grid grid-cols-2 md:grid-cols-4 border border-slate-200/90 dark:border-slate-800 rounded-2xl overflow-hidden divide-x divide-y md:divide-y-0 divide-slate-200/90 dark:divide-slate-800 bg-slate-50/70 dark:bg-slate-900/60 shadow-sm"
+    >
+      {
+        matrixItems.map((item, index) => (
+          <button
+            type="button"
+            role="tab"
+            id={`matrix-tab-${item.id}`}
+            aria-selected={index === 0 ? 'true' : 'false'}
+            aria-controls={`matrix-panel-${item.id}`}
+            tabindex={index === 0 ? 0 : -1}
+            data-index={index}
+            data-target-id={item.id}
+            class:list={[
+              'matrix-tab-btn group relative flex flex-col justify-between p-5 sm:p-6 text-left transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:z-20 min-h-[150px] sm:min-h-[170px] md:aspect-square',
+              index === 0
+                ? 'bg-white dark:bg-slate-800/95 shadow-sm text-slate-950 dark:text-white is-active'
+                : 'hover:bg-white/80 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-400 is-inactive',
+            ]}
+          >
+            <!-- Active Top Accent Indicator -->
+            <div
+              class:list={[
+                'tab-indicator-bar absolute top-0 left-0 right-0 h-1 bg-emerald-500 transition-opacity duration-200',
+                index === 0 ? 'opacity-100' : 'opacity-0 group-hover:opacity-40',
+              ]}
+              aria-hidden="true"
+            />
+
+            <!-- Top Row: Index and Connected Flow Indicator -->
+            <div class="flex items-center justify-between w-full mb-3">
+              <span class="tab-index-badge text-xs font-mono font-bold px-2 py-0.5 rounded transition-colors duration-200 bg-slate-200/70 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                0{index + 1}
+              </span>
+
+              <!-- Connector icon indicating matrix sequence -->
+              <span class="connector-arrow text-slate-300 dark:text-slate-600 group-hover:text-emerald-500 transition-colors text-xs font-mono">
+                {index < matrixItems.length - 1 ? '→' : '★'}
+              </span>
+            </div>
+
+            <!-- Middle / Category Name -->
+            <div class="mt-auto">
+              <span class="tab-category block text-xs font-bold uppercase tracking-wider mb-1.5 transition-colors duration-200 text-slate-500 dark:text-slate-400">
+                {item.category}
+              </span>
+
+              <!-- Selected Target Value -->
+              <h4 class="tab-target text-sm sm:text-base font-bold leading-snug tracking-tight text-slate-900 dark:text-white transition-colors duration-200">
+                {item.target}
+              </h4>
+            </div>
+
+            <!-- Active Status Pip -->
+            <div class="mt-3 flex items-center gap-1.5">
+              <span
+                class:list={[
+                  'tab-pip w-1.5 h-1.5 rounded-full transition-all duration-200',
+                  index === 0
+                    ? 'bg-emerald-500 ring-2 ring-emerald-200 dark:ring-emerald-900'
+                    : 'bg-transparent',
+                ]}
+              />
+              <span class="tab-status-label text-[10px] uppercase font-semibold tracking-wider text-emerald-700 dark:text-emerald-400 transition-opacity duration-200">
+                {index === 0 ? 'Active Focus' : ''}
+              </span>
+            </div>
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Active Details Panels -->
+    <div
+      class="matrix-content-container mt-4 p-6 sm:p-8 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm transition-all duration-300"
+    >
+      {
+        matrixItems.map((item, index) => {
+          const isNestedTab = Boolean(item.isNested && item.dimensions && item.dimensions.length > 0);
+          const dimCount = item.dimensions?.length || 0;
+          const nestedGridClass =
+            dimCount === 2
+              ? 'grid-cols-1 sm:grid-cols-2'
+              : dimCount === 3
+              ? 'grid-cols-1 sm:grid-cols-3'
+              : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4';
+
+          return (
+            <div
+              id={`matrix-panel-${item.id}`}
+              role="tabpanel"
+              aria-labelledby={`matrix-tab-${item.id}`}
+              tabindex="0"
+              class:list={[
+                'matrix-tabpanel transition-opacity duration-200',
+                index === 0 ? 'block opacity-100' : 'hidden opacity-0',
+              ]}
+            >
+              {/* CASE A: Standard Non-Nested Tab (Mobility, Mode, User Group) */}
+              {!isNestedTab && (
+                <div>
+                  <!-- Panel Header -->
+                  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
+                    <div>
+                      <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
+                        <span>Selected Category 0{index + 1}:</span>
+                        <span class="text-slate-700 dark:text-slate-300 font-bold">{item.category}</span>
+                      </div>
+                      <h4 class="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white tracking-tight">
+                        {item.target}
+                      </h4>
+                    </div>
+
+                    <!-- Optional Top Link Anchor if configured -->
+                    {item.linkAnchor && (
+                      <a
+                        href={`#${item.linkAnchor}`}
+                        class="matrix-sid-shortcut inline-flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 rounded-xl shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 self-start md:self-auto shrink-0"
+                        title="Jump to corresponding section below"
+                      >
+                        <span>{item.linkText || 'View in Section'}</span>
+                        <svg
+                          class="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        >
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                        </svg>
+                      </a>
+                    )}
+                  </div>
+
+                  <!-- Panel Body: Contextual Description -->
+                  <div class="py-6">
+                    <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                      Contextual Rationale &amp; Scope
+                    </h5>
+                    <p class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed max-w-3xl">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <!-- Additional Info Grid (Attributes / Constraints / Relevance) -->
+                  {item.additionalInfo && item.additionalInfo.length > 0 && (
+                    <div class="pt-6 border-t border-slate-100 dark:border-slate-800">
+                      <h5 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+                        Key Attributes &amp; Considerations
+                      </h5>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {item.additionalInfo.map((info) => (
+                          <div class="p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 rounded-xl">
+                            <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                              {info.label}
+                            </span>
+                            <span class="block text-xs sm:text-sm font-medium text-slate-900 dark:text-white">
+                              {info.value}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* CASE B: Nested SID Dimension Tab with 2 to 4 Subordinate Tabs */}
+              {isNestedTab && (
+                <div class="nested-sid-container">
+                  <!-- Header Introduction -->
+                  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100 dark:border-slate-800">
+                    <div>
+                      <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
+                        <span>Selected Category 0{index + 1}:</span>
+                        <span class="text-slate-700 dark:text-slate-300 font-bold">{item.category}</span>
+                      </div>
+                      <h4 class="text-xl sm:text-2xl font-bold text-slate-950 dark:text-white tracking-tight">
+                        {item.target}
+                      </h4>
+                    </div>
+
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 self-start md:self-auto">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      <span>{dimCount} Targeted SID Dimensions</span>
+                    </span>
+                  </div>
+
+                  <!-- General Contextual Note -->
+                  <div class="py-4">
+                    <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <!-- Nested Tabs Bar (Subordinate to Main Matrix Tabs) -->
+                  <div class="mt-2 mb-6">
+                    <div class="flex items-center justify-between mb-3">
+                      <span class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        Select Targeted Dimension:
+                      </span>
+                      <span class="text-[11px] text-slate-400 dark:text-slate-500">
+                        Click card to switch · Click <span class="font-semibold text-emerald-600 dark:text-emerald-400">arrow icon</span> to jump to framework
+                      </span>
+                    </div>
+
+                    <!-- Dynamic Nested Tablist (Adapts cleanly to 2, 3, or 4 dimensions) -->
+                    <div
+                      role="tablist"
+                      aria-label="Nested SID Dimensions"
+                      class:list={['nested-tablist grid gap-3', nestedGridClass]}
+                    >
+                      {item.dimensions?.map((dim, dimIdx) => (
+                        <button
+                          type="button"
+                          role="tab"
+                          id={`nested-tab-${dim.id}`}
+                          aria-selected={dimIdx === 0 ? 'true' : 'false'}
+                          aria-controls={`nested-panel-${dim.id}`}
+                          tabindex={dimIdx === 0 ? 0 : -1}
+                          data-nested-index={dimIdx}
+                          data-nested-id={dim.id}
+                          class:list={[
+                            'nested-tab-btn group relative flex flex-col justify-between p-4 rounded-xl border text-left transition-all duration-200 outline-none focus-visible:ring-2 focus-visible:ring-emerald-500',
+                            dimIdx === 0
+                              ? 'bg-white dark:bg-slate-800 border-emerald-500 dark:border-emerald-500 shadow-sm ring-1 ring-emerald-500/20 text-slate-950 dark:text-white is-active'
+                              : 'bg-slate-50/80 dark:bg-slate-800/40 border-slate-200/80 dark:border-slate-800/80 hover:bg-white dark:hover:bg-slate-800/80 text-slate-700 dark:text-slate-300 is-inactive',
+                          ]}
+                        >
+                          <div class="flex items-start justify-between gap-2 w-full mb-2">
+                            <!-- Dimension Badge -->
+                            <span class="nested-badge text-[10px] font-mono font-bold px-1.5 py-0.5 rounded transition-colors bg-slate-200/80 dark:bg-slate-700/80 text-slate-700 dark:text-slate-300">
+                              Pillar 0{dimIdx + 1}
+                            </span>
+
+                            <!-- Clickable shortcut link to SID card anchor -->
+                            <a
+                              href={`#${dim.anchorId}`}
+                              class="nested-shortcut-link p-1 rounded text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 transition-colors"
+                              title={`Jump directly to ${dim.name} in SID Section`}
+                              aria-label={`Jump directly to ${dim.name} in SID Section`}
+                              onclick="event.stopPropagation();"
+                            >
+                              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                              </svg>
+                            </a>
+                          </div>
+
+                          <!-- Dimension Name -->
+                          <div>
+                            <h5 class="nested-title text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                              {dim.name}
+                            </h5>
+                            <p class="nested-desc text-[11px] text-slate-500 dark:text-slate-400 line-clamp-2 mt-1 leading-normal">
+                              {dim.shortDescription}
+                            </p>
+                          </div>
+
+                          <!-- Active Pip -->
+                          <div class="mt-2.5 flex items-center gap-1.5">
+                            <span
+                              class:list={[
+                                'nested-pip w-1.5 h-1.5 rounded-full transition-all',
+                                dimIdx === 0 ? 'bg-emerald-500' : 'bg-transparent',
+                              ]}
+                            />
+                            <span class="nested-pip-label text-[9px] uppercase font-bold tracking-wider text-emerald-700 dark:text-emerald-400">
+                              {dimIdx === 0 ? 'Selected' : ''}
+                            </span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <!-- Nested Tab Panels (Detailed Context for each Dimension) -->
+                  <div class="nested-panel-wrapper pt-6 border-t border-slate-100 dark:border-slate-800">
+                    {item.dimensions?.map((dim, dimIdx) => (
+                      <div
+                        id={`nested-panel-${dim.id}`}
+                        role="tabpanel"
+                        aria-labelledby={`nested-tab-${dim.id}`}
+                        tabindex="0"
+                        class:list={[
+                          'nested-tabpanel transition-opacity duration-200',
+                          dimIdx === 0 ? 'block opacity-100' : 'hidden opacity-0',
+                        ]}
+                      >
+                        <!-- Panel Header with Context & Direct Shortcut -->
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+                          <div>
+                            <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 mb-1">
+                              <span>Dimension Focus 0{dimIdx + 1}:</span>
+                              <span class="text-slate-900 dark:text-white font-bold">{dim.name}</span>
+                            </div>
+                            <p class="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-400">
+                              {dim.shortDescription}
+                            </p>
+                          </div>
+
+                          <!-- Prominent Shortcut Button to SID section card -->
+                          <a
+                            href={`#${dim.anchorId}`}
+                            class="inline-flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 rounded-xl shadow-sm transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 self-start sm:self-auto shrink-0"
+                            title={`Jump to ${dim.name} card in SID Section`}
+                          >
+                            <span>Explore "{dim.name}" in Framework</span>
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                              <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                            </svg>
+                          </a>
+                        </div>
+
+                        <!-- Detailed Contextual Explanation -->
+                        <div class="mb-6 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/40 border border-slate-200/70 dark:border-slate-800">
+                          <h6 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
+                            Project Relevance &amp; Contextual Rationale
+                          </h6>
+                          <p class="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+                            {dim.detailedDescription}
+                          </p>
+                        </div>
+
+                        <!-- Additional Attributes for this Dimension -->
+                        {dim.additionalInfo && dim.additionalInfo.length > 0 && (
+                          <div>
+                            <h6 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">
+                              Key Focus &amp; Practical Considerations
+                            </h6>
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              {dim.additionalInfo.map((info) => (
+                                <div class="p-3.5 bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 rounded-xl">
+                                  <span class="block text-[11px] font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1">
+                                    {info.label}
+                                  </span>
+                                  <span class="block text-xs sm:text-sm font-medium text-slate-900 dark:text-white">
+                                    {info.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupSelectionMatrix() {
+    const tablist = document.querySelector('.matrix-tablist');
+    if (!tablist) return;
+
+    const mainTabs = Array.from(tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const mainPanels = Array.from(document.querySelectorAll<HTMLElement>('.matrix-tabpanel'));
+
+    // Main Tabs Controller
+    function selectMainTab(newTab: HTMLButtonElement, focus = true) {
+      mainTabs.forEach((tab) => {
+        tab.setAttribute('aria-selected', 'false');
+        tab.setAttribute('tabindex', '-1');
+        tab.classList.remove('bg-white', 'dark:bg-slate-800/95', 'shadow-sm', 'text-slate-950', 'dark:text-white', 'is-active');
+        tab.classList.add('hover:bg-white/80', 'dark:hover:bg-slate-800/50', 'text-slate-600', 'dark:text-slate-400', 'is-inactive');
+
+        const indicator = tab.querySelector('.tab-indicator-bar');
+        indicator?.classList.remove('opacity-100');
+        indicator?.classList.add('opacity-0');
+
+        const pip = tab.querySelector('.tab-pip');
+        pip?.classList.remove('bg-emerald-500', 'ring-2', 'ring-emerald-200', 'dark:ring-emerald-900');
+        pip?.classList.add('bg-transparent');
+
+        const statusLabel = tab.querySelector('.tab-status-label');
+        if (statusLabel) statusLabel.textContent = '';
+      });
+
+      mainPanels.forEach((panel) => {
+        panel.classList.add('hidden', 'opacity-0');
+        panel.classList.remove('block', 'opacity-100');
+      });
+
+      newTab.setAttribute('aria-selected', 'true');
+      newTab.setAttribute('tabindex', '0');
+      newTab.classList.add('bg-white', 'dark:bg-slate-800/95', 'shadow-sm', 'text-slate-950', 'dark:text-white', 'is-active');
+      newTab.classList.remove('hover:bg-white/80', 'dark:hover:bg-slate-800/50', 'text-slate-600', 'dark:text-slate-400', 'is-inactive');
+
+      const indicator = newTab.querySelector('.tab-indicator-bar');
+      indicator?.classList.remove('opacity-0');
+      indicator?.classList.add('opacity-100');
+
+      const pip = newTab.querySelector('.tab-pip');
+      pip?.classList.add('bg-emerald-500', 'ring-2', 'ring-emerald-200', 'dark:ring-emerald-900');
+      pip?.classList.remove('bg-transparent');
+
+      const statusLabel = newTab.querySelector('.tab-status-label');
+      if (statusLabel) statusLabel.textContent = 'Active Focus';
+
+      const targetPanelId = newTab.getAttribute('aria-controls');
+      if (targetPanelId) {
+        const targetPanel = document.getElementById(targetPanelId);
+        if (targetPanel) {
+          targetPanel.classList.remove('hidden');
+          setTimeout(() => {
+            targetPanel.classList.add('block', 'opacity-100');
+          }, 10);
+        }
+      }
+
+      if (focus) {
+        newTab.focus();
+      }
+    }
+
+    mainTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        selectMainTab(tab, false);
+      });
+    });
+
+    // Keyboard navigation for main tabs
+    tablist.addEventListener('keydown', (e: KeyboardEvent) => {
+      const target = e.target as HTMLButtonElement;
+      const currentIndex = mainTabs.indexOf(target);
+      if (currentIndex === -1) return;
+
+      let nextIndex: number | null = null;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        nextIndex = (currentIndex + 1) % mainTabs.length;
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        nextIndex = (currentIndex - 1 + mainTabs.length) % mainTabs.length;
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        nextIndex = 0;
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        nextIndex = mainTabs.length - 1;
+      }
+
+      if (nextIndex !== null) {
+        selectMainTab(mainTabs[nextIndex], true);
+      }
+    });
+
+    // Nested Tabs Controller (inside SID Dimension panel)
+    const nestedTablists = document.querySelectorAll<HTMLElement>('.nested-tablist');
+    nestedTablists.forEach((nestedList) => {
+      const nestedTabs = Array.from(nestedList.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+      const nestedPanels = Array.from(document.querySelectorAll<HTMLElement>('.nested-tabpanel'));
+
+      function selectNestedTab(newNestedTab: HTMLButtonElement, focus = true) {
+        nestedTabs.forEach((tab) => {
+          tab.setAttribute('aria-selected', 'false');
+          tab.setAttribute('tabindex', '-1');
+          tab.classList.remove(
+            'bg-white',
+            'dark:bg-slate-800',
+            'border-emerald-500',
+            'dark:border-emerald-500',
+            'shadow-sm',
+            'ring-1',
+            'ring-emerald-500/20',
+            'text-slate-950',
+            'dark:text-white',
+            'is-active'
+          );
+          tab.classList.add(
+            'bg-slate-50/80',
+            'dark:bg-slate-800/40',
+            'border-slate-200/80',
+            'dark:border-slate-800/80',
+            'hover:bg-white',
+            'dark:hover:bg-slate-800/80',
+            'text-slate-700',
+            'dark:text-slate-300',
+            'is-inactive'
+          );
+
+          const pip = tab.querySelector('.nested-pip');
+          pip?.classList.remove('bg-emerald-500');
+          pip?.classList.add('bg-transparent');
+
+          const pipLabel = tab.querySelector('.nested-pip-label');
+          if (pipLabel) pipLabel.textContent = '';
+        });
+
+        nestedPanels.forEach((panel) => {
+          panel.classList.add('hidden', 'opacity-0');
+          panel.classList.remove('block', 'opacity-100');
+        });
+
+        newNestedTab.setAttribute('aria-selected', 'true');
+        newNestedTab.setAttribute('tabindex', '0');
+        newNestedTab.classList.add(
+          'bg-white',
+          'dark:bg-slate-800',
+          'border-emerald-500',
+          'dark:border-emerald-500',
+          'shadow-sm',
+          'ring-1',
+          'ring-emerald-500/20',
+          'text-slate-950',
+          'dark:text-white',
+          'is-active'
+        );
+        newNestedTab.classList.remove(
+          'bg-slate-50/80',
+          'dark:bg-slate-800/40',
+          'border-slate-200/80',
+          'dark:border-slate-800/80',
+          'hover:bg-white',
+          'dark:hover:bg-slate-800/80',
+          'text-slate-700',
+          'dark:text-slate-300',
+          'is-inactive'
+        );
+
+        const pip = newNestedTab.querySelector('.nested-pip');
+        pip?.classList.add('bg-emerald-500');
+        pip?.classList.remove('bg-transparent');
+
+        const pipLabel = newNestedTab.querySelector('.nested-pip-label');
+        if (pipLabel) pipLabel.textContent = 'Selected';
+
+        const targetPanelId = newNestedTab.getAttribute('aria-controls');
+        if (targetPanelId) {
+          const targetPanel = document.getElementById(targetPanelId);
+          if (targetPanel) {
+            targetPanel.classList.remove('hidden');
+            setTimeout(() => {
+              targetPanel.classList.add('block', 'opacity-100');
+            }, 10);
+          }
+        }
+
+        if (focus) {
+          newNestedTab.focus();
+        }
+      }
+
+      nestedTabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          selectNestedTab(tab, false);
+        });
+      });
+
+      // Keyboard navigation for nested tabs
+      nestedList.addEventListener('keydown', (e: KeyboardEvent) => {
+        const target = e.target as HTMLButtonElement;
+        const currentIndex = nestedTabs.indexOf(target);
+        if (currentIndex === -1) return;
+
+        let nextIndex: number | null = null;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+          e.preventDefault();
+          nextIndex = (currentIndex + 1) % nestedTabs.length;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          nextIndex = (currentIndex - 1 + nestedTabs.length) % nestedTabs.length;
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          nextIndex = 0;
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          nextIndex = nestedTabs.length - 1;
+        }
+
+        if (nextIndex !== null) {
+          selectNestedTab(nestedTabs[nextIndex], true);
+        }
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', setupSelectionMatrix);
+</script>

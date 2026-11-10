@@ -19,7 +19,8 @@ const { dimension, index } = Astro.props;
 ---
 
 <article
-  class="sid-card group flex flex-col bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all duration-300 overflow-hidden"
+  id={dimension.id}
+  class="sid-card group flex flex-col bg-white dark:bg-slate-900/90 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all duration-300 overflow-hidden scroll-mt-28"
   data-card-id={dimension.id}
 >
   <!-- Card Header & Toggle Trigger -->
@@ -160,30 +161,52 @@ const { dimension, index } = Astro.props;
   function setupSIDCards() {
     const cards = document.querySelectorAll('.sid-card');
 
-    cards.forEach((card) => {
+    function toggleCard(card: Element, shouldExpand?: boolean) {
       const button = card.querySelector('.sid-toggle-btn');
       const content = card.querySelector('.sid-expandable-content');
       const chevron = card.querySelector('.sid-chevron-icon');
       const label = card.querySelector('.sid-toggle-label');
+      const isExpanded = button?.getAttribute('aria-expanded') === 'true';
+      const targetState = shouldExpand !== undefined ? shouldExpand : !isExpanded;
 
+      if (targetState) {
+        button?.setAttribute('aria-expanded', 'true');
+        content?.classList.remove('grid-rows-[0fr]');
+        content?.classList.add('grid-rows-[1fr]');
+        chevron?.classList.add('rotate-180');
+        if (label) label.textContent = 'Collapse Dimension';
+      } else {
+        button?.setAttribute('aria-expanded', 'false');
+        content?.classList.remove('grid-rows-[1fr]');
+        content?.classList.add('grid-rows-[0fr]');
+        chevron?.classList.remove('rotate-180');
+        if (label) label.textContent = 'Read Full Dimension';
+      }
+    }
+
+    cards.forEach((card) => {
+      const button = card.querySelector('.sid-toggle-btn');
       button?.addEventListener('click', () => {
-        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-
-        if (isExpanded) {
-          button.setAttribute('aria-expanded', 'false');
-          content?.classList.remove('grid-rows-[1fr]');
-          content?.classList.add('grid-rows-[0fr]');
-          chevron?.classList.remove('rotate-180');
-          if (label) label.textContent = 'Read Full Dimension';
-        } else {
-          button.setAttribute('aria-expanded', 'true');
-          content?.classList.remove('grid-rows-[0fr]');
-          content?.classList.add('grid-rows-[1fr]');
-          chevron?.classList.add('rotate-180');
-          if (label) label.textContent = 'Collapse Dimension';
-        }
+        toggleCard(card);
       });
     });
+
+    // Auto-expand card if navigated via anchor URL (e.g. #practices-routines)
+    function handleAnchor() {
+      const hash = window.location.hash.replace('#', '');
+      if (!hash) return;
+      const targetCard = document.getElementById(hash);
+      if (targetCard && targetCard.classList.contains('sid-card')) {
+        toggleCard(targetCard, true);
+        targetCard.classList.add('ring-2', 'ring-emerald-500');
+        setTimeout(() => {
+          targetCard.classList.remove('ring-2', 'ring-emerald-500');
+        }, 2200);
+      }
+    }
+
+    window.addEventListener('hashchange', handleAnchor);
+    handleAnchor();
   }
 
   document.addEventListener('DOMContentLoaded', setupSIDCards);

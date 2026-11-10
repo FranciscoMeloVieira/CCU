@@ -1,0 +1,86 @@
+[
+  {
+    "id": "mobility",
+    "category": "Mobility",
+    "target": "Lorem Ipsum Dolor Sit Amet",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "additionalInfo": [
+      { "label": "Spatial Scope", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Primary Context", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Key Challenge", "value": "Lorem ipsum dolor sit amet" }
+    ],
+    "linkAnchor": null,
+    "linkText": null
+  },
+  {
+    "id": "mode",
+    "category": "Mode",
+    "target": "Lorem Ipsum Dolor Sit Amet",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+    "additionalInfo": [
+      { "label": "System Integration", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Ticketing & Access", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Ecological Goal", "value": "Lorem ipsum dolor sit amet" }
+    ],
+    "linkAnchor": null,
+    "linkText": null
+  },
+  {
+    "id": "user-group",
+    "category": "User Group",
+    "target": "Lorem Ipsum Dolor Sit Amet",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.",
+    "additionalInfo": [
+      { "label": "Cohort", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Key Motivation", "value": "Lorem ipsum dolor sit amet" },
+      { "label": "Interaction Need", "value": "Lorem ipsum dolor sit amet" }
+    ],
+    "linkAnchor": null,
+    "linkText": null
+  },
+  {
+    "id": "sid-dimension",
+    "category": "SID Dimensions",
+    "target": "Lorem Ipsum Dolor Sit Amet",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "isNested": true,
+    "dimensions": [
+      {
+        "id": "practices-routines",
+        "name": "Practices & Routines",
+        "anchorId": "practices-routines",
+        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "detailedDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "additionalInfo": [
+          { "label": "Intervention Scope", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Behavioral Focus", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Key Metric", "value": "Lorem ipsum dolor sit amet" }
+        ]
+      },
+      {
+        "id": "legible-impact",
+        "name": "Legible Impact",
+        "anchorId": "legible-impact",
+        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "detailedDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.",
+        "additionalInfo": [
+          { "label": "Feedback Modality", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Information Clarity", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Ethical Guideline", "value": "Lorem ipsum dolor sit amet" }
+        ]
+      },
+      {
+        "id": "durable-low-impact",
+        "name": "Durable & Low-Impact Design",
+        "anchorId": "durable-low-impact",
+        "shortDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "detailedDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt.",
+        "additionalInfo": [
+          { "label": "Hardware Architecture", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Infrastructure Reuse", "value": "Lorem ipsum dolor sit amet" },
+          { "label": "Lifecycle Priority", "value": "Lorem ipsum dolor sit amet" }
+        ]
+      }
+    ]
+  }
+]

@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import Section from '../components/Section.astro';
 import SIDCard from '../components/SIDCard.astro';
 import TeamCard from '../components/TeamCard.astro';
+import SelectionMatrix from '../components/SelectionMatrix.astro';
 
 import projectData from '../data/project.json';
 import sidDimensionsData from '../data/sid-dimensions.json';
@@ -67,6 +68,9 @@ const getTeamGridClass = (count: number) => {
         ))}
       </div>
     </div>
+
+    <!-- Interactive Selection Matrix -->
+    <SelectionMatrix />
   </Section>
 
   <!-- Section 2: Goals & Objectives -->

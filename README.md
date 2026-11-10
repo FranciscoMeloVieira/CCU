@@ -30,12 +30,14 @@ CCU/
 │   │   ├── FloatingNavigation.astro  # Desktop floating dock & mobile slide-over
 │   │   ├── Hero.astro                # Project intro, logo placeholder, metadata
 │   │   ├── Section.astro             # Reusable semantic section layout
+│   │   ├── SelectionMatrix.astro     # Interactive 4-category connected selection matrix
 │   │   ├── SIDCard.astro             # Interactive expandable SID dimension card
 │   │   ├── TeamCard.astro            # Minimal team profile card with social links
 │   │   └── Footer.astro              # Minimal footer with academic info & repo link
 │   ├── data/
 │   │   ├── navigation.json           # Navigation items and section IDs
 │   │   ├── project.json              # Project name, overview, roadmap & outcomes
+│   │   ├── selection-matrix.json     # Mobility, Mode, User Group & SID focus parameters
 │   │   ├── sid-dimensions.json       # SID framework dimensions, toggles & details
 │   │   └── team.json                 # Team roster, roles, bios & profile links
 │   ├── layouts/
@@ -105,7 +107,25 @@ All website content is intentionally separated from code. You can update the ent
 - **Outcomes**: Edit the cards under `outcomes.cards`.
 - **Footer**: Update copyright year, GitHub repository URL, and license under `footer`.
 
-### 2. Sustainable Interaction Design Framework (`src/data/sid-dimensions.json`)
+### 2. Selection Matrix (`src/data/selection-matrix.json`)
+Controls the interactive 4-square focus matrix in the Project Background section:
+- `id`: Unique identifier (e.g. `"mobility"`, `"mode"`, `"user-group"`, `"sid-dimension"`).
+- `category`: Category title (e.g. `"Mobility"`).
+- `target`: Selected target value (e.g. `"Urban & Daily Campus Commuting"`).
+- `description`: Detailed contextual explanation displayed in the tab panel when the square is active.
+- `additionalInfo`: Array of `{ "label": "...", "value": "..." }` attribute callouts.
+- `isNested`: (Optional boolean) When `true`, enables nested subordinate tabs inside this matrix tab (used for SID Dimensions).
+- `dimensions`: Array of 2–4 targeted SID dimensions containing:
+  - `id`: Dimension identifier (e.g. `"practices-routines"`).
+  - `name`: Display title (e.g. `"Practices & Routines"`).
+  - `anchorId`: Anchor ID matching the SID card below (e.g. `"practices-routines"`).
+  - `shortDescription`: Concise summary shown in the nested tab card.
+  - `detailedDescription`: Full contextual rationale for targeting this dimension.
+  - `additionalInfo`: Array of key focus / consideration badges.
+- `linkAnchor`: Optional anchor target for standard tabs.
+- `linkText`: Label for the shortcut link.
+
+### 3. Sustainable Interaction Design Framework (`src/data/sid-dimensions.json`)
 Each dimension is an object with:
 - `id`: Unique identifier (e.g. `"practices-routines"`).
 - `title`: Display title.
@@ -118,7 +138,7 @@ Each dimension is an object with:
 
 > **Note**: The layout automatically adapts to any number of enabled dimensions (4, 3, 2, 1, or 0) without breaking grids.
 
-### 3. Team Members (`src/data/team.json`)
+### 4. Team Members (`src/data/team.json`)
 Each team member entry includes:
 - `id`: Unique identifier.
 - `name`: Full name.
@@ -128,7 +148,7 @@ Each team member entry includes:
 - `avatar`: URL or path to a profile image (leave empty `""` to use the styled monogram).
 - `links`: Object with `github`, `linkedin`, and `website`. Any link left empty (`""`) is automatically hidden from the card.
 
-### 4. Navigation (`src/data/navigation.json`)
+### 5. Navigation (`src/data/navigation.json`)
 Controls items shown in both the desktop floating dock and mobile slide-over menu:
 - `id`: Section ID (must match an `id` on the page, e.g. `"hero"`, `"background"`, `"objectives"`, `"sid-framework"`, `"team"`).
 - `label`: Human-readable label (e.g. `"SID Framework"`).
