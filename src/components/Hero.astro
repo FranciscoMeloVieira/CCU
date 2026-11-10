@@ -1,0 +1,129 @@
+---
+import projectData from '../data/project.json';
+---
+
+<header
+  id="hero"
+  class="relative pt-24 pb-20 md:pt-32 md:pb-28 lg:pt-36 lg:pb-32 overflow-hidden"
+>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col items-center text-center max-w-4xl mx-auto">
+      <!-- Course / Project Badge -->
+      <div
+        class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide uppercase bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 mb-8"
+      >
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>{projectData.metadata.status}</span>
+        <span class="text-emerald-300 dark:text-emerald-700">/</span>
+        <span>{projectData.metadata.duration}</span>
+      </div>
+
+      <!-- Project Logo Placeholder (Polished Fallback Design) -->
+      <div class="relative group mb-8">
+        <div
+          class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 border border-slate-200/90 dark:border-slate-700/80 shadow-md flex flex-col items-center justify-center p-3 transition-transform duration-300 group-hover:scale-105"
+        >
+          <!-- Geometric knot / infinity loop icon -->
+          <svg
+            class="w-9 h-9 sm:w-11 sm:h-11 text-emerald-600 dark:text-emerald-400 mb-1"
+            viewBox="0 0 48 48"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="17" cy="24" r="10"></circle>
+            <circle cx="31" cy="24" r="10"></circle>
+            <path d="M17 14c4 4 10 16 14 20"></path>
+          </svg>
+          <span class="text-[10px] font-bold tracking-widest text-slate-700 dark:text-slate-300 uppercase">
+            {projectData.logo.text}
+          </span>
+        </div>
+      </div>
+
+      <!-- Main Project Title -->
+      <h1
+        class="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.12] mb-6"
+      >
+        {projectData.name}
+      </h1>
+
+      <!-- Tagline -->
+      <p
+        class="text-xl sm:text-2xl font-light text-slate-700 dark:text-slate-300 max-w-3xl leading-relaxed mb-6"
+      >
+        {projectData.tagline}
+      </p>
+
+      <!-- Introductory Paragraph -->
+      <p
+        class="text-base sm:text-lg text-slate-600 dark:text-slate-400 max-w-2xl leading-relaxed mb-10"
+      >
+        {projectData.introduction}
+      </p>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex flex-wrap items-center justify-center gap-4 mb-14">
+        <a
+          href="#sid-framework"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-slate-900 dark:bg-emerald-600 rounded-xl hover:bg-emerald-700 dark:hover:bg-emerald-500 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        >
+          <span>Explore SID Framework</span>
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
+        </a>
+
+        <a
+          href="#background"
+          class="inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        >
+          <span>Project Background</span>
+        </a>
+      </div>
+
+      <!-- Metadata Bar -->
+      <div
+        class="w-full pt-8 border-t border-slate-200/80 dark:border-slate-800/80 grid grid-cols-1 sm:grid-cols-3 gap-6 text-left"
+      >
+        <div class="flex flex-col">
+          <span class="text-xs uppercase font-medium tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            Academic Course
+          </span>
+          <span class="text-sm font-medium text-slate-800 dark:text-slate-200">
+            {projectData.metadata.course}
+          </span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
+            {projectData.metadata.courseCode} · {projectData.metadata.academicYear}
+          </span>
+        </div>
+
+        <div class="flex flex-col">
+          <span class="text-xs uppercase font-medium tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            Focus & Methodology
+          </span>
+          <span class="text-sm font-medium text-slate-800 dark:text-slate-200">
+            Sustainable Interaction Design
+          </span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
+            Situated Computing & Tangible Probes
+          </span>
+        </div>
+
+        <div class="flex flex-col">
+          <span class="text-xs uppercase font-medium tracking-wider text-slate-400 dark:text-slate-500 mb-1">
+            Host Institution
+          </span>
+          <span class="text-sm font-medium text-slate-800 dark:text-slate-200">
+            {projectData.metadata.institution}
+          </span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">
+            Academic Research Showcase
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>

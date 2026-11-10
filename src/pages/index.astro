@@ -1,0 +1,219 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import SIDCard from '../components/SIDCard.astro';
+import TeamCard from '../components/TeamCard.astro';
+
+import projectData from '../data/project.json';
+import sidDimensionsData from '../data/sid-dimensions.json';
+import teamData from '../data/team.json';
+
+// Filter active SID dimensions dynamically
+const activeDimensions = sidDimensionsData.filter((dim) => dim.enabled);
+
+// Determine dynamic grid layout class based on number of active SID dimensions
+const getSIDGridClass = (count: number) => {
+  if (count <= 1) return 'max-w-2xl mx-auto';
+  if (count === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto';
+  if (count === 3) return 'grid grid-cols-1 md:grid-cols-3 gap-6';
+  // 4 or more: clean balanced 2x2 or auto-fill grid
+  return 'grid grid-cols-1 md:grid-cols-2 gap-6';
+};
+
+// Determine dynamic grid layout class for team members
+const getTeamGridClass = (count: number) => {
+  if (count <= 1) return 'max-w-md mx-auto';
+  if (count === 2) return 'grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto';
+  if (count === 3) return 'grid grid-cols-1 md:grid-cols-3 gap-6';
+  return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6';
+};
+---
+
+<MainLayout>
+  <!-- Hero Section -->
+  <Hero />
+
+  <!-- Section 1: Project Background & Context -->
+  <Section
+    id="background"
+    eyebrow={projectData.background.eyebrow}
+    title={projectData.background.title}
+    subtitle={projectData.background.subtitle}
+    secondaryBg={true}
+  >
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      <!-- Paragraph Content -->
+      <div class="lg:col-span-7 space-y-5 text-slate-700 dark:text-slate-300 leading-relaxed text-base sm:text-lg font-normal">
+        {projectData.background.paragraphs.map((p) => (
+          <p>{p}</p>
+        ))}
+      </div>
+
+      <!-- Quick Metrics / Highlight Cards -->
+      <div class="lg:col-span-5 flex flex-col gap-4">
+        {projectData.background.highlights.map((item) => (
+          <div class="p-5 sm:p-6 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all">
+            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-700 dark:text-emerald-400 mb-1">
+              {item.metric}
+            </div>
+            <div class="text-xs uppercase font-bold tracking-wider text-slate-900 dark:text-white mb-1.5">
+              {item.label}
+            </div>
+            <div class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-normal">
+              {item.description}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </Section>
+
+  <!-- Section 2: Goals & Objectives -->
+  <Section
+    id="objectives"
+    eyebrow={projectData.objectives.eyebrow}
+    title={projectData.objectives.title}
+    subtitle={projectData.objectives.subtitle}
+  >
+    <!-- Structured Roadmap Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+      {
+        projectData.objectives.items.map((item) => (
+          <div class="group relative flex flex-col justify-between p-6 sm:p-7 bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all duration-300">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-mono font-bold text-emerald-700 dark:text-emerald-400 px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800/60">
+                  STEP {item.number}
+                </span>
+                <span class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">
+                  {item.category}
+                </span>
+              </div>
+              <h3 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2.5 group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors">
+                {item.title}
+              </h3>
+              <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mb-6">
+                {item.description}
+              </p>
+            </div>
+
+            <!-- Deliverable tag -->
+            <div class="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Target: <span class="text-slate-800 dark:text-slate-200 font-semibold">{item.deliverable}</span></span>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Expected Outcomes Sub-block -->
+    <div class="pt-10 border-t border-slate-200/80 dark:border-slate-800/80">
+      <div class="max-w-2xl mb-8">
+        <span class="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+          {projectData.outcomes.eyebrow}
+        </span>
+        <h3 class="text-2xl font-bold text-slate-950 dark:text-white mt-1">
+          {projectData.outcomes.title}
+        </h3>
+        <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+          {projectData.outcomes.subtitle}
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {
+          projectData.outcomes.cards.map((outcome) => (
+            <div class="p-6 bg-slate-50/70 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 rounded-2xl">
+              <div class="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 shadow-sm">
+                {outcome.icon === 'cpu' && (
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <rect x="9" y="9" width="6" height="6" />
+                    <line x1="9" y1="1" x2="9" y2="4" />
+                    <line x1="15" y1="1" x2="15" y2="4" />
+                    <line x1="9" y1="20" x2="9" y2="23" />
+                    <line x1="15" y1="20" x2="15" y2="23" />
+                    <line x1="20" y1="9" x2="23" y2="9" />
+                    <line x1="20" y1="15" x2="23" y2="15" />
+                    <line x1="1" y1="9" x2="4" y2="9" />
+                    <line x1="1" y1="15" x2="4" y2="15" />
+                  </svg>
+                )}
+                {outcome.icon === 'file-text' && (
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                )}
+                {outcome.icon === 'code' && (
+                  <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                )}
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white mb-2">
+                {outcome.title}
+              </h4>
+              <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                {outcome.description}
+              </p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </Section>
+
+  <!-- Section 3: Sustainable Interaction Design (SID) Framework -->
+  <Section
+    id="sid-framework"
+    eyebrow="04 / Core Theoretical Paradigm"
+    title="Sustainable Interaction Design (SID) Framework"
+    subtitle="Grounding computational interactions in ecological longevity, visceral clarity, and collective commons."
+    secondaryBg={true}
+  >
+    {
+      activeDimensions.length === 0 ? (
+        <div class="text-center py-16 px-4 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+          <p class="text-base text-slate-500 dark:text-slate-400">
+            No SID dimensions are currently published. Enable dimensions in <code class="px-1.5 py-0.5 bg-slate-100 dark:bg-slate-800 rounded font-mono text-xs">src/data/sid-dimensions.json</code>.
+          </p>
+        </div>
+      ) : (
+        <div class={getSIDGridClass(activeDimensions.length)}>
+          {activeDimensions.map((dimension, index) => (
+            <SIDCard dimension={dimension} index={index} />
+          ))}
+        </div>
+      )
+    }
+  </Section>
+
+  <!-- Section 4: Team Members -->
+  <Section
+    id="team"
+    eyebrow="05 / Multidisciplinary Cohort"
+    title="Project Team"
+    subtitle="Collaborative design, research, and technical prototyping across the 7-week development period."
+  >
+    {
+      teamData.length === 0 ? (
+        <div class="text-center py-16 px-4 bg-white dark:bg-slate-900 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+          <p class="text-base text-slate-500 dark:text-slate-400">
+            Team roster will be updated shortly.
+          </p>
+        </div>
+      ) : (
+        <div class={getTeamGridClass(teamData.length)}>
+          {teamData.map((member) => (
+            <TeamCard member={member} />
+          ))}
+        </div>
+      )
+    }
+  </Section>
+</MainLayout>

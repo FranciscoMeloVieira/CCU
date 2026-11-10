@@ -1,0 +1,41 @@
+[
+  {
+    "id": "francisco-melo-vieira",
+    "name": "Francisco Melo Vieira",
+    "role": "role",
+    "bio": "Default bio",
+    "avatar": "",
+    "initials": "FMV",
+    "links": {
+      "github": "https://github.com/FranciscoMeloVieira",
+      "linkedin": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "second",
+    "name": "second",
+    "role": "role",
+    "bio": "Default bio",
+    "avatar": "",
+    "initials": "AC",
+    "links": {
+      "github": "",
+      "linkedin": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "third",
+    "name": "third",
+    "role": "role",
+    "bio": "Default bio",
+    "avatar": "",
+    "initials": "ER",
+    "links": {
+      "github": "",
+      "linkedin": "",
+      "website": ""
+    }
+  }
+]

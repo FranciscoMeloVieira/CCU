@@ -1,0 +1,27 @@
+[
+  {
+    "id": "hero",
+    "label": "Overview",
+    "icon": "home"
+  },
+  {
+    "id": "background",
+    "label": "Background",
+    "icon": "book-open"
+  },
+  {
+    "id": "objectives",
+    "label": "Objectives",
+    "icon": "target"
+  },
+  {
+    "id": "sid-framework",
+    "label": "SID Framework",
+    "icon": "layers"
+  },
+  {
+    "id": "team",
+    "label": "Team",
+    "icon": "users"
+  }
+]

@@ -1,0 +1,33 @@
+{
+  "name": "ccu",
+  "version": "1.0.0",
+  "description": "Academic Project Showcase Website",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FranciscoMeloVieira/CCU.git"
+  },
+  "keywords": [
+    "astro",
+    "tailwind",
+    "academic-showcase",
+    "sustainable-interaction-design"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FranciscoMeloVieira/CCU/issues"
+  },
+  "homepage": "https://github.com/FranciscoMeloVieira/CCU#readme",
+  "dependencies": {
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.8",
+    "tailwindcss": "^4.3.5"
+  }
+}

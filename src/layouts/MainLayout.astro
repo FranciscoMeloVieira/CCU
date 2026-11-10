@@ -1,0 +1,87 @@
+---
+import '../styles/global.css';
+import FloatingNavigation from '../components/FloatingNavigation.astro';
+import Footer from '../components/Footer.astro';
+import projectData from '../data/project.json';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${projectData.name} — ${projectData.tagline}`,
+  description = projectData.introduction,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={projectData.name} />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={projectData.name} />
+
+    <!-- Favicon: Clean SVG circular knot / ecological emblem -->
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%2310b981'/><path d='M10 16a6 6 0 1 1 12 0 6 6 0 0 1-12 0z' fill='none' stroke='white' stroke-width='2.5'/><circle cx='16' cy='16' r='2' fill='white'/></svg>"
+    />
+
+    <!-- Theme initialization (Inline to prevent FOUC) -->
+    <script is:inline>
+      (function () {
+        try {
+          const stored = localStorage.getItem('theme');
+          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && systemDark)) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        } catch (_) {}
+      })();
+    </script>
+  </head>
+
+  <body
+    class="min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 flex flex-col font-sans selection:bg-emerald-500 selection:text-white"
+  >
+    <!-- Background subtle ambient radial highlights -->
+    <div
+      class="fixed inset-0 pointer-events-none -z-10 overflow-hidden opacity-40 dark:opacity-20"
+      aria-hidden="true"
+    >
+      <div
+        class="absolute -top-32 -left-32 w-96 h-96 bg-emerald-100 dark:bg-emerald-950/40 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute top-1/3 -right-32 w-96 h-96 bg-slate-100 dark:bg-slate-900/60 rounded-full blur-3xl"
+      ></div>
+      <div
+        class="absolute bottom-10 left-1/4 w-96 h-96 bg-emerald-50 dark:bg-emerald-950/30 rounded-full blur-3xl"
+      ></div>
+    </div>
+
+    <!-- Floating Navigation Bar (Desktop fixed dock & Mobile drawer) -->
+    <FloatingNavigation />
+
+    <!-- Main Content Area -->
+    <main id="main-content" class="flex-grow w-full focus:outline-none">
+      <slot />
+    </main>
+
+    <!-- Global Project Footer -->
+    <Footer />
+  </body>
+</html>

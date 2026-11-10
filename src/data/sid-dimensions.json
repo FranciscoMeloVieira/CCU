@@ -1,0 +1,78 @@
+[
+  {
+    "id": "practices-routines",
+    "title": "Practices & Routines",
+    "icon": "repeat",
+    "enabled": true,
+    "shortDescription": "Interrogating everyday habits to reshape how habitual interactions influence ongoing resource consumption.",
+    "detailedDescription": "Sustainable interaction design begins with the acknowledgment that sustainability is not solely an individual calculation, but deeply woven into sociocultural routines. This dimension examines how everyday interaction rituals—from device charging rhythms to shared lab printing—can be scaffolded toward deliberate, restorative habits rather than mindless consumption.",
+    "keyPrinciples": [
+      "Friction as a reflective pause rather than a usability defect",
+      "Designing for default restorative states and sleep cycles",
+      "Scaffolding incremental habit evolution across community cohorts",
+      "Decoupling perceived productivity from continuous computational churn"
+    ],
+    "practicalExamples": [
+      "Calm ambient notifications indicating optimal time windows for energy-intensive tasks based on grid renewable capacity.",
+      "Shared maker-space tools that automatically log maintenance intervals and celebrate collaborative tool longevity.",
+      "Contextual standby sequences that gently invite users to disconnect at natural session boundaries."
+    ]
+  },
+  {
+    "id": "legible-impact",
+    "title": "Legible Impact",
+    "icon": "eye",
+    "enabled": true,
+    "shortDescription": "Transforming abstract ecological costs into direct, sensory, and easily interpretable representations.",
+    "detailedDescription": "Most digital interfaces present resource consumption as sterile numbers—kilowatt hours, gigabytes, or megabytes—which lack visceral resonance. Legible Impact emphasizes visceral, sensory, and contextual translation: turning invisible ambient metrics into tangible forms, physical movements, or ambient lighting that evoke immediate intuitive understanding.",
+    "keyPrinciples": [
+      "Translating abstract data into embodied metaphors and spatial presence",
+      "Direct spatial proximity between action and ecological consequence",
+      "Transparent communication of hidden computational infrastructure and life cycles",
+      "Avoiding misleading greenwashing or gamified moral tokens"
+    ],
+    "practicalExamples": [
+      "A physical mechanical dial that subtly resists rotation as cloud data transfers scale upwards in complexity.",
+      "An ambient water-ripple projection in public hydration stations showing cumulative bottle refills across the building.",
+      "A tactile desktop indicator that gently cools down as background server workloads finish processing."
+    ]
+  },
+  {
+    "id": "relationships-commons",
+    "title": "Relationships & Commons",
+    "icon": "users",
+    "enabled": true,
+    "shortDescription": "Fostering collective stewardship and communal sharing mechanisms over individualistic ownership.",
+    "detailedDescription": "Ecological resilience fundamentally relies on healthy commons. Instead of treating users as isolated consumers competing for scarce resources, this dimension explores how interfaces can strengthen mutual responsibility, facilitate peer-to-peer equipment sharing, and foster communal care for shared academic or community infrastructure.",
+    "keyPrinciples": [
+      "Foregrounding shared dependencies and communal resource thresholds",
+      "Facilitating cooperative repair, borrowing, and tool redistribution networks",
+      "Encouraging social accountability without surveillance or shame",
+      "Strengthening relational ties between people and their living environment"
+    ],
+    "practicalExamples": [
+      "A peer-to-peer equipment lending hub with asynchronous digital lockers and repair status logs.",
+      "Collective resource budgeting dashboards in research labs that celebrate joint conservation milestones.",
+      "Community skill-exchange boards embedded directly in university prototyping facilities."
+    ]
+  },
+  {
+    "id": "durable-low-impact",
+    "title": "Durable & Low-Impact Design",
+    "icon": "shield-check",
+    "enabled": true,
+    "shortDescription": "Prioritizing longevity, modular repairability, bio-compatibility, and minimal energy expenditure.",
+    "detailedDescription": "Every digital artifact embodies a material footprint. Durable and Low-Impact Design insists on physical and digital frugality: selecting renewable or recyclable materials, writing lightweight, efficient code that runs effortlessly on legacy hardware, and ensuring every physical component can be readily disassembled, inspected, repaired, and upgraded.",
+    "keyPrinciples": [
+      "Design for disassembly, modularity, and open standard fasteners",
+      "Prioritizing passive mechanics and ultra-low-power computing architectures",
+      "Selecting biodegradable casings, non-toxic finishes, and reclaimed materials",
+      "Software durability that resists planned obsolescence and vendor lock-in"
+    ],
+    "practicalExamples": [
+      "Solderless modular sensor enclosures crafted from locally sourced, compostable mycelium composites.",
+      "E-ink and bistable reflective displays requiring zero power when holding a static information frame.",
+      "Fully open-source schematics and modular daughterboards allowing single-component replacement."
+    ]
+  }
+]

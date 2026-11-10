@@ -1,0 +1,107 @@
+{
+  "name": "CCU — User Centered Design",
+  "shortName": "CCU",
+  "tagline": "Fostering Ecological Awareness Through Legible, Everyday Tangible Computing",
+  "introduction": "A 7-week academic design research project exploring how tangible and ubiquitous computing can make ecological footprints visible, meaningful, and actionable within local community environments.",
+  "metadata": {
+    "course": "Critical Contextual Usability & Interaction Design",
+    "courseCode": "CCU-401",
+    "institution": "Department of Interaction Design & Informatics",
+    "academicYear": "2025–2026",
+    "duration": "7 Weeks (Feb – Apr 2026)",
+    "status": "Academic Research & Prototype Sprint"
+  },
+  "logo": {
+    "text": "CCU",
+    "subtitle": "Sustainable Interaction Design"
+  },
+  "background": {
+    "eyebrow": "01 / Context & Motivation",
+    "title": "Project Background",
+    "subtitle": "Addressing the invisibility of ecological impacts in ubiquitous digital services.",
+    "paragraphs": [
+      "In contemporary connected environments, the ecological weight of digital and material consumption remains largely abstract. While connected appliances, smart campuses, and digital services proliferate, their ambient resource demands—from water and electricity to raw material extraction—are hidden behind frictionless interfaces.",
+      "This project investigates the critical gap between computational convenience and environmental responsibility. By situated interaction design, we examine how physical, ambient, and situated computing can bridge this rift without inducing cognitive fatigue or moralistic guilt.",
+      "Grounding our inquiry in Sustainable Interaction Design (SID) principles, we explore interaction paradigms that foster long-term stewardship, collective awareness, and deliberate material engagement over ephemeral convenience."
+    ],
+    "highlights": [
+      {
+        "metric": "85%",
+        "label": "Hidden Impact",
+        "description": "Of resource footprints in digital infrastructure are intangible to end users."
+      },
+      {
+        "metric": "7 Weeks",
+        "label": "Iterative Sprint",
+        "description": "From contextual inquiry and participatory probes to physical prototype."
+      },
+      {
+        "metric": "4 Pillars",
+        "label": "SID Alignment",
+        "description": "Grounded in established Sustainable Interaction Design frameworks."
+      }
+    ]
+  },
+  "objectives": {
+    "eyebrow": "02 / Strategic Roadmap",
+    "title": "Goals & Objectives",
+    "subtitle": "Structured deliverables guiding our research, conceptualization, and prototype evaluation.",
+    "items": [
+      {
+        "number": "01",
+        "title": "Contextual Inquiry & Resource Mapping",
+        "category": "Field Research",
+        "description": "Conduct situated observational studies and semi-structured interviews across shared campus workspaces to trace invisible resource flows.",
+        "deliverable": "Situational Journey Maps & Resource Friction Audit"
+      },
+      {
+        "number": "02",
+        "title": "Legible Interface Conceptualization",
+        "category": "Interaction Design",
+        "description": "Synthesize design opportunities into ambient and tangible feedback mechanics that communicate ecological consequences without interrupting everyday tasks.",
+        "deliverable": "Interactive Design Matrix & Low-Fidelity Explorations"
+      },
+      {
+        "number": "03",
+        "title": "Physical Computing Prototyping",
+        "category": "Physical Prototyping",
+        "description": "Engineer functional low-power hardware mockups utilizing modular components, bio-materials, and legible physical motion to convey ecological metrics.",
+        "deliverable": "Working Sensor-Actuator Ambient Display Unit"
+      },
+      {
+        "number": "04",
+        "title": "Participatory Evaluation & Open Toolkit",
+        "category": "Validation & Synthesis",
+        "description": "Validate the prototype with campus stakeholder cohorts over a multi-day deployment, documenting behavioral reflections and publishing an open SID toolkit.",
+        "deliverable": "Comprehensive Research Report & Open Design Spec"
+      }
+    ]
+  },
+  "outcomes": {
+    "eyebrow": "03 / Deliverables & Impact",
+    "title": "Expected Outcomes",
+    "subtitle": "Tangible artifacts and research contributions anticipated by week seven.",
+    "cards": [
+      {
+        "title": "Functional Ambient Artifact",
+        "description": "A refined, physical computing installation demonstrating tangible feedback mechanisms for shared resource monitoring.",
+        "icon": "cpu"
+      },
+      {
+        "title": "Evaluative Research Paper",
+        "description": "Rigorous academic documentation analyzing user perceptions, ethical dilemmas, and longitudinal interaction shifts.",
+        "icon": "file-text"
+      },
+      {
+        "title": "Open SID Design Repository",
+        "description": "Publicly shared CAD files, firmware, schematics, and design guidelines for academic and open-source replication.",
+        "icon": "code"
+      }
+    ]
+  },
+  "footer": {
+    "copyrightYear": "2026",
+    "githubRepo": "https://github.com/FranciscoMeloVieira/CCU",
+    "license": "CC BY-NC 4.0 / Academic Use"
+  }
+}
