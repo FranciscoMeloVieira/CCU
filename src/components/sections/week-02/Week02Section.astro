@@ -1,5 +1,11 @@
 ---
+import SectionNavigationTemplate from '../SectionNavigationTemplate.astro';
+import sectionsData from '../../../data/sections.json';
+
+const navigation = sectionsData.find((section) => section.id === 'week-02')?.navigation || [];
 ---
+
+<SectionNavigationTemplate sectionId="week-02" navigation={navigation} />
 
 <div id="week-02-overview" class="space-y-6 scroll-mt-28">
   <section class="p-8 rounded-2xl bg-slate-50/70 dark:bg-slate-800/40 border border-dashed border-slate-300 dark:border-slate-700">

@@ -32,7 +32,8 @@ CCU/
 │   │   ├── SectionSelector.astro     # Horizontal project section selector with hover-expansion
 │   │   ├── SectionWindow.astro       # Shared window shell and section component loader
 │   │   ├── Section.astro             # Reusable semantic section layout
-│   │   ├── sections/                 # Dedicated content and supporting components by section
+│   │   ├── sections/                 # Dedicated content, navigation, and supporting components by section
+│   │   │   ├── SectionNavigationTemplate.astro
 │   │   │   ├── background/
 │   │   │   │   ├── BackgroundSection.astro
 │   │   │   │   ├── SelectionMatrix.astro
@@ -120,7 +121,7 @@ Controls the central project hub, horizontal selector tabs, window headers, and 
 - `order`: Integer sequence for displaying tabs.
 - `navigation`: Array of internal section anchors (`{ "id": "...", "label": "...", "icon": "..." }`) that automatically power the context-aware floating sidebar.
 
-`sections.json` contains metadata only. Section-specific content is implemented in a matching Astro component under `src/components/sections/`. The `id` in the JSON determines which component is rendered by `SectionWindow.astro`.
+`sections.json` contains metadata only. Section-specific content is implemented in a matching Astro component under `src/components/sections/`. Each section component includes its own navigation template, while `FloatingNavigation.astro` only provides the global shell and switches the selected section's navigation into it.
 
 #### Adding a new section
 
@@ -140,14 +141,35 @@ Controls the central project hub, horizontal selector tabs, window headers, and 
    ```
 
 2. Create the dedicated component at `src/components/sections/week-03/Week03Section.astro`.
-3. Import the component in `src/components/SectionWindow.astro`.
-4. Add a section mapping:
+3. Include a `SectionNavigationTemplate` in the new section component using that section's `navigation` metadata.
+4. Import the component in `src/components/SectionWindow.astro`.
+5. Add a section mapping:
 
    ```astro
    {section.id === 'week-03' && <Week03Section />}
    ```
 
 Keep section-specific supporting components in the same section folder. For example, the background section owns `SelectionMatrix.astro`, `SIDCard.astro`, and `TeamCard.astro` in `src/components/sections/background/`.
+
+#### Adding Week 01 interviews
+
+Week 01 interviews are configured in `src/data/week01/week01.json` and stored as PDFs in `src/data/week01/interviews/`:
+
+```json
+{
+  "interviews": [
+    {
+      "id": "user-01",
+      "category": "user",
+      "title": "User Interview 01",
+      "description": "Optional interview summary.",
+      "file": "user-01.pdf"
+    }
+  ]
+}
+```
+
+Use `"user"` or `"stakeholder"` for `category`. Add the matching PDF to the interviews folder; the Week 01 component discovers the file and renders it with an open-in-new-tab link.
 
 ### 2. Project Information (`src/data/project.json`)
 - **Project Name & Tagline**: Edit `name`, `shortName`, `tagline`, and `introduction`.

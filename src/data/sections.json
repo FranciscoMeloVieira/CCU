@@ -24,10 +24,8 @@
     "enabled": true,
     "order": 2,
     "navigation": [
-      { "id": "week-01-overview", "label": "Overview", "icon": "compass" },
-      { "id": "week-01-research", "label": "Field Inquiry", "icon": "search" },
-      { "id": "week-01-findings", "label": "Key Findings", "icon": "lightbulb" },
-      { "id": "week-01-deliverables", "label": "Deliverables", "icon": "file-check" }
+      { "id": "week-01-user-interviews", "label": "User Interviews", "icon": "users" },
+      { "id": "week-01-stakeholder-interviews", "label": "Stakeholder Interviews", "icon": "users" }
     ]
   },
   {
@@ -36,7 +34,7 @@
     "title": "Week 02 — Conceptual Prototyping & Low-Fi Probes",
     "shortDescription": "Translating insights into tangible ambient indicators and physical mockups.",
     "description": "Translating discovery findings into physical interaction concepts and low-power tangible indicators.",
-    "enabled": true,
+    "enabled": false,
     "order": 3,
     "navigation": [
       { "id": "week-02-overview", "label": "Overview", "icon": "compass" },

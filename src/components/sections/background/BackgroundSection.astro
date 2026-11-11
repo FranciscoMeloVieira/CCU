@@ -5,9 +5,14 @@ import teamData from '../../../data/team.json';
 import SelectionMatrix from './SelectionMatrix.astro';
 import SIDCard from './SIDCard.astro';
 import TeamCard from './TeamCard.astro';
+import SectionNavigationTemplate from '../SectionNavigationTemplate.astro';
+import sectionsData from '../../../data/sections.json';
 
 const activeDimensions = sidDimensionsData.filter((dimension) => dimension.enabled);
+const navigation = sectionsData.find((section) => section.id === 'background')?.navigation || [];
 ---
+
+<SectionNavigationTemplate sectionId="background" navigation={navigation} />
 
 <div class="space-y-16">
   <section id="background-context" class="scroll-mt-28">

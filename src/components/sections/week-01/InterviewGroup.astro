@@ -1,0 +1,65 @@
+---
+interface Interview {
+  id: string;
+  category: 'user' | 'stakeholder';
+  title: string;
+  description?: string;
+  file: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  items: Interview[];
+  getPdfUrl: (fileName: string) => string | undefined;
+}
+
+const { title, description, items, getPdfUrl } = Astro.props;
+---
+
+<section class="pt-8 border-t border-slate-200 dark:border-slate-800">
+  <div class="mb-6">
+    <h3 class="text-2xl font-bold text-slate-950 dark:text-white">{title}</h3>
+    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2">{description}</p>
+  </div>
+
+  {items.length === 0 ? (
+    <div class="p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-sm text-slate-500 dark:text-slate-400">
+      No {title.toLowerCase()} have been added yet.
+    </div>
+  ) : (
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {items.map((interview) => {
+        const pdfUrl = getPdfUrl(interview.file);
+
+        return (
+          <article class="flex flex-col justify-between p-6 bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-2xl">
+            <div>
+              <span class="text-[11px] font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+                {interview.category}
+              </span>
+              <h4 class="text-lg font-bold text-slate-900 dark:text-white mt-2">{interview.title}</h4>
+              {interview.description && (
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2">{interview.description}</p>
+              )}
+            </div>
+
+            {pdfUrl ? (
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 mt-6 px-4 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-900 dark:bg-emerald-600 hover:bg-emerald-700 dark:hover:bg-emerald-500 transition-colors"
+              >
+                Open interview PDF
+                <span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              <p class="mt-6 text-xs text-amber-700 dark:text-amber-400">PDF file not found: {interview.file}</p>
+            )}
+          </article>
+        );
+      })}
+    </div>
+  )}
+</section>

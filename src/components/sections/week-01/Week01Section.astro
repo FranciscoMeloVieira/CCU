@@ -1,31 +1,61 @@
 ---
+import week01Data from '../../../data/week01/week01.json';
+import InterviewGroup from './InterviewGroup.astro';
+import SectionNavigationTemplate from '../SectionNavigationTemplate.astro';
+import sectionsData from '../../../data/sections.json';
+
+interface Interview {
+  id: string;
+  category: 'user' | 'stakeholder';
+  title: string;
+  description?: string;
+  file: string;
+}
+
+const interviews = week01Data.interviews as Interview[];
+const interviewFiles = import.meta.glob('../../../data/week01/interviews/*.pdf', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+}) as Record<string, string>;
+
+
+const userInterviews = interviews.filter((interview) => interview.category === 'user');
+const stakeholderInterviews = interviews.filter((interview) => interview.category === 'stakeholder');
+const navigation = sectionsData.find((section) => section.id === 'week-01')?.navigation || [];
+
+const getPdfUrl = (fileName: string) => {
+  const filePath = `../../../data/week01/interviews/${fileName}`;
+  return interviewFiles[filePath];
+};
 ---
+
+<SectionNavigationTemplate sectionId="week-01" navigation={navigation} />
 
 <div id="week-01-overview" class="space-y-10 scroll-mt-28">
   <section id="week-01-research">
     <span class="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Discovery Sprint</span>
-    <h3 class="text-2xl font-bold text-slate-950 dark:text-white mt-2">Fieldwork &amp; Situational Journey Mapping</h3>
-    <div class="space-y-4 text-base text-slate-700 dark:text-slate-300 leading-relaxed mt-5">
-      <p>Our research team spent five days conducting situated contextual inquiries across central Lisbon multimodal stations. By combining stationary dwell-time observations with 14 semi-structured intercept interviews with university students, we documented how departure timing, weather variations, and real-time transit uncertainty dictate mobility choices.</p>
-      <p>Rather than treating sustainable transit choices as deliberate calculations, commuters act primarily out of deeply ingrained cognitive routines.</p>
-    </div>
+    <h3 class="text-2xl font-bold text-slate-950 dark:text-white mt-2">Interview Research</h3>
+    <p class="text-base text-slate-700 dark:text-slate-300 leading-relaxed mt-5">
+      Review the interview answers collected from users and stakeholders during Week 01.
+    </p>
   </section>
 
-  <section id="week-01-findings" class="pt-8 border-t border-slate-200 dark:border-slate-800">
-    <h3 class="text-2xl font-bold text-slate-950 dark:text-white">Core Friction Observations</h3>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-      <article class="p-6 bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-2xl"><strong class="text-emerald-700 dark:text-emerald-400">82%</strong><h4 class="font-bold text-slate-900 dark:text-white mt-2">Last-Mile Information Asymmetry</h4><p class="text-sm text-slate-600 dark:text-slate-400 mt-2">No ambient visibility of shared bicycle dock availability before reaching street level.</p></article>
-      <article class="p-6 bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-2xl"><strong class="text-emerald-700 dark:text-emerald-400">0% visibility</strong><h4 class="font-bold text-slate-900 dark:text-white mt-2">Abstract Impact Disconnect</h4><p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Ticketing apps provide no legible feedback on collective carbon or space benefits.</p></article>
-      <article class="p-6 bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 rounded-2xl"><strong class="text-emerald-700 dark:text-emerald-400">64% fallback</strong><h4 class="font-bold text-slate-900 dark:text-white mt-2">Habitual Default Bias</h4><p class="text-sm text-slate-600 dark:text-slate-400 mt-2">Respondents reverted to ride-hailing when faced with a short transit delay.</p></article>
-    </div>
-  </section>
+  <div id="week-01-user-interviews">
+    <InterviewGroup
+      title="User Interviews"
+      description="Interviews with people who experience the mobility context directly."
+      items={userInterviews}
+      getPdfUrl={getPdfUrl}
+    />
+  </div>
 
-  <section id="week-01-deliverables" class="pt-8 border-t border-slate-200 dark:border-slate-800">
-    <h3 class="text-2xl font-bold text-slate-950 dark:text-white">Week 01 Deliverables &amp; Artifacts</h3>
-    <ul class="space-y-3 mt-6">
-      <li class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300">Multimodal Friction Audit Map <span class="text-emerald-700 dark:text-emerald-400">— Completed</span></li>
-      <li class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300">Transcript &amp; Persona Synthesis <span class="text-emerald-700 dark:text-emerald-400">— Completed</span></li>
-      <li class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl text-slate-700 dark:text-slate-300">Design Opportunity Matrix <span class="text-emerald-700 dark:text-emerald-400">— Ready for Sprint 02</span></li>
-    </ul>
-  </section>
+  <div id="week-01-stakeholder-interviews">
+    <InterviewGroup
+      title="Stakeholder Interviews"
+      description="Interviews with stakeholders involved in or affected by the project context."
+      items={stakeholderInterviews}
+      getPdfUrl={getPdfUrl}
+    />
+  </div>
 </div>
