@@ -32,6 +32,21 @@
     </li>
   </ul>
   <div id="desktop-section-navigation-host"></div>
+  <div class="w-full mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+    <button
+      id="theme-toggle-desktop"
+      type="button"
+      class="w-full px-3 py-2 text-[11px] font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+      aria-label="Switch color theme"
+    >
+      <svg class="w-4 h-4 dark:hidden mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l.707-.707M6.343 17.657l.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+      <svg class="hidden dark:block w-4 h-4 mx-auto text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+      </svg>
+    </button>
+  </div>
 </nav>
 
 <header class="lg:hidden fixed top-4 right-4 z-50">
@@ -58,7 +73,14 @@
     </ul>
     <div id="mobile-section-navigation-host"></div>
   </div>
-  <button id="theme-toggle-mobile" type="button" class="px-3 py-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg">Toggle appearance</button>
+  <button id="theme-toggle-mobile" type="button" class="px-3 py-2 text-xs text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg" aria-label="Switch color theme">
+    <svg class="w-4 h-4 dark:hidden mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l.707-.707M6.343 17.657l.707-.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+    <svg class="hidden dark:block w-4 h-4 mx-auto text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+    </svg>
+  </button>
 </div>
 
 <script>
@@ -77,6 +99,7 @@
     const close = document.getElementById('mobile-nav-close');
     const hamburger = document.getElementById('hamburger-icon');
     const closeIcon = document.getElementById('close-icon');
+    const desktopThemeToggle = document.getElementById('theme-toggle-desktop');
     const themeToggle = document.getElementById('theme-toggle-mobile');
     let observer: IntersectionObserver | null = null;
 
@@ -152,10 +175,13 @@
     });
     desktopReturn?.addEventListener('click', () => document.getElementById('window-close-btn')?.click());
     mobileReturn?.addEventListener('click', () => document.getElementById('window-close-btn')?.click());
-    themeToggle?.addEventListener('click', () => {
+    function toggleTheme() {
       const dark = document.documentElement.classList.toggle('dark');
       localStorage.setItem('theme', dark ? 'dark' : 'light');
-    });
+    }
+
+    desktopThemeToggle?.addEventListener('click', toggleTheme);
+    themeToggle?.addEventListener('click', toggleTheme);
     window.addEventListener('sectionContextChange', (event) => {
       setContext((event as CustomEvent<{ sectionId?: string }>).detail?.sectionId || 'overview');
     });
