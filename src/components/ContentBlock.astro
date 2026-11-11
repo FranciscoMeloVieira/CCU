@@ -1,0 +1,209 @@
+---
+interface Props {
+  block: {
+    type: string;
+    id?: string;
+    title?: string;
+    subtitle?: string;
+    badge?: string;
+    text?: string;
+    icon?: string;
+    paragraphs?: string[];
+    items?: Array<{
+      tag?: string;
+      title: string;
+      description: string;
+      metric?: string;
+      status?: string;
+    }>;
+    links?: Array<{
+      title: string;
+      url: string;
+      label: string;
+      description?: string;
+    }>;
+  };
+}
+
+const { block } = Astro.props;
+---
+
+<div id={block.id} class="content-block py-6 scroll-mt-28">
+  {/* BLOCK TYPE: Callout */}
+  {block.type === 'callout' && (
+    <div class="p-6 sm:p-7 rounded-2xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/90 dark:border-slate-800 shadow-sm relative overflow-hidden">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0 border border-emerald-200/60 dark:border-emerald-800/60">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="flex-grow">
+          <div class="flex items-center gap-2 mb-1.5">
+            {block.badge && (
+              <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-emerald-100/80 dark:bg-emerald-900/40 text-emerald-800 dark:text-emerald-300">
+                {block.badge}
+              </span>
+            )}
+            {block.title && (
+              <h4 class="text-base font-bold text-slate-900 dark:text-white">
+                {block.title}
+              </h4>
+            )}
+          </div>
+          {block.text && (
+            <p class="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+              {block.text}
+            </p>
+          )}
+        </div>
+      </div>
+    </div>
+  )}
+
+  {/* BLOCK TYPE: Text Block */}
+  {block.type === 'text' && (
+    <div class="max-w-4xl">
+      {block.title && (
+        <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-4">
+          {block.title}
+        </h3>
+      )}
+      {block.paragraphs && (
+        <div class="space-y-4 text-base sm:text-lg text-slate-700 dark:text-slate-300 leading-relaxed font-normal">
+          {block.paragraphs.map((p) => (
+            <p>{p}</p>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* BLOCK TYPE: Cards Grid */}
+  {block.type === 'cards' && (
+    <div>
+      {block.title && (
+        <div class="mb-6">
+          <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            {block.title}
+          </h3>
+          {block.subtitle && (
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              {block.subtitle}
+            </p>
+          )}
+        </div>
+      )}
+      {block.items && (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {block.items.map((item) => (
+            <div class="p-6 bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/80 dark:border-slate-800 rounded-2xl flex flex-col justify-between hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-all duration-300 shadow-sm">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  {item.tag && (
+                    <span class="text-[11px] font-mono font-bold px-2 py-0.5 rounded bg-slate-200/80 dark:bg-slate-700/80 text-slate-700 dark:text-slate-300">
+                      {item.tag}
+                    </span>
+                  )}
+                  {item.metric && (
+                    <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400">
+                      {item.metric}
+                    </span>
+                  )}
+                </div>
+                <h4 class="text-lg font-bold text-slate-900 dark:text-white mb-2">
+                  {item.title}
+                </h4>
+                <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                  {item.description}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* BLOCK TYPE: Deliverables */}
+  {block.type === 'deliverables' && (
+    <div>
+      {block.title && (
+        <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white mb-6">
+          {block.title}
+        </h3>
+      )}
+      {block.items && (
+        <div class="space-y-3">
+          {block.items.map((item) => (
+            <div class="p-4 sm:p-5 bg-white dark:bg-slate-850 border border-slate-200/90 dark:border-slate-800 rounded-xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm hover:border-emerald-300 dark:hover:border-emerald-700/60 transition-colors">
+              <div class="flex items-start gap-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 mt-2 shrink-0"></span>
+                <div>
+                  <h4 class="text-base font-bold text-slate-900 dark:text-white">
+                    {item.title}
+                  </h4>
+                  <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-0.5">
+                    {item.description}
+                  </p>
+                </div>
+              </div>
+              {item.status && (
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200/80 dark:border-emerald-800/60 self-start sm:self-auto shrink-0">
+                  {item.status}
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+
+  {/* BLOCK TYPE: Resources / Links */}
+  {block.type === 'resources' && (
+    <div>
+      {block.title && (
+        <div class="mb-6">
+          <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            {block.title}
+          </h3>
+          {block.subtitle && (
+            <p class="text-sm text-slate-600 dark:text-slate-400 mt-1">
+              {block.subtitle}
+            </p>
+          )}
+        </div>
+      )}
+      {block.links && (
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {block.links.map((link) => (
+            <a
+              href={link.url}
+              target={link.url.startsWith('http') ? '_blank' : '_self'}
+              rel={link.url.startsWith('http') ? 'noopener noreferrer' : ''}
+              class="group p-5 bg-slate-50 dark:bg-slate-800/40 border border-slate-200/90 dark:border-slate-800 rounded-2xl hover:border-emerald-500 hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <h4 class="text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                  {link.title}
+                </h4>
+                {link.description && (
+                  <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 leading-normal">
+                    {link.description}
+                  </p>
+                )}
+              </div>
+              <div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+                <span>{link.label}</span>
+                <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+              </div>
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  )}
+</div>

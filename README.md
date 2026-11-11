@@ -27,23 +27,33 @@ CCU/
 │       └── deploy.yml          # Automated GitHub Pages deployment workflow
 ├── src/
 │   ├── components/
-│   │   ├── FloatingNavigation.astro  # Desktop floating dock & mobile slide-over
+│   │   ├── FloatingNavigation.astro  # Context-aware floating dock & mobile slide-over
 │   │   ├── Hero.astro                # Project intro, logo placeholder, metadata
+│   │   ├── SectionSelector.astro     # Horizontal project section selector with hover-expansion
+│   │   ├── SectionWindow.astro       # Shared window shell and section component loader
 │   │   ├── Section.astro             # Reusable semantic section layout
-│   │   ├── SelectionMatrix.astro     # Interactive 4-category connected selection matrix
-│   │   ├── SIDCard.astro             # Interactive expandable SID dimension card
-│   │   ├── TeamCard.astro            # Minimal team profile card with social links
+│   │   ├── sections/                 # Dedicated content and supporting components by section
+│   │   │   ├── background/
+│   │   │   │   ├── BackgroundSection.astro
+│   │   │   │   ├── SelectionMatrix.astro
+│   │   │   │   ├── SIDCard.astro
+│   │   │   │   └── TeamCard.astro
+│   │   │   ├── week-01/
+│   │   │   │   └── Week01Section.astro
+│   │   │   └── week-02/
+│   │   │       └── Week02Section.astro
 │   │   └── Footer.astro              # Minimal footer with academic info & repo link
 │   ├── data/
-│   │   ├── navigation.json           # Navigation items and section IDs
-│   │   ├── project.json              # Project name, overview, roadmap & outcomes
-│   │   ├── selection-matrix.json     # Mobility, Mode, User Group & SID focus parameters
-│   │   ├── sid-dimensions.json       # SID framework dimensions, toggles & details
-│   │   └── team.json                 # Team roster, roles, bios & profile links
+│   │   ├── sections.json              # Section metadata and navigation anchors
+│   │   ├── navigation.json            # Base overview navigation items
+│   │   ├── project.json               # Project name, overview, roadmap & outcomes
+│   │   ├── selection-matrix.json      # Mobility, Mode, User Group & SID focus parameters
+│   │   ├── sid-dimensions.json        # SID framework dimensions, toggles & details
+│   │   └── team.json                  # Team roster, roles, bios & profile links
 │   ├── layouts/
 │   │   └── MainLayout.astro          # Root HTML shell, theme scripts & meta tags
 │   ├── pages/
-│   │   └── index.astro               # Single-page showcase entry point
+│   │   └── index.astro               # Central project hub entry point
 │   └── styles/
 │       └── global.css                # Tailwind CSS v4 setup & theme styles
 ├── astro.config.mjs                  # Astro configuration (base path & Tailwind Vite)
@@ -99,7 +109,47 @@ npm run preview
 
 All website content is intentionally separated from code. You can update the entire site by editing files in `src/data/`:
 
-### 1. Project Information (`src/data/project.json`)
+### 1. Project Sections (`src/data/sections.json`)
+Controls the central project hub, horizontal selector tabs, window headers, and navigation:
+- `id`: Unique identifier (e.g. `"background"`, `"week-01"`, `"week-02"`, `"results"`).
+- `type`: Section classification (`"background"`, `"week"`, `"special"`).
+- `title`: Display title shown on the selector tab and window header.
+- `shortDescription`: Concise summary revealed on desktop hover in the horizontal selector.
+- `description`: Introductory description displayed in the opened window header.
+- `enabled`: `true` or `false` toggle. Setting to `false` omits it immediately.
+- `order`: Integer sequence for displaying tabs.
+- `navigation`: Array of internal section anchors (`{ "id": "...", "label": "...", "icon": "..." }`) that automatically power the context-aware floating sidebar.
+
+`sections.json` contains metadata only. Section-specific content is implemented in a matching Astro component under `src/components/sections/`. The `id` in the JSON determines which component is rendered by `SectionWindow.astro`.
+
+#### Adding a new section
+
+1. Add the section metadata to `src/data/sections.json`:
+
+   ```json
+   {
+     "id": "week-03",
+     "type": "week",
+     "title": "Week 03 — Evaluation",
+     "shortDescription": "Testing concepts with participants.",
+     "description": "Detailed description shown in the section window header.",
+     "enabled": true,
+     "order": 4,
+     "navigation": []
+   }
+   ```
+
+2. Create the dedicated component at `src/components/sections/week-03/Week03Section.astro`.
+3. Import the component in `src/components/SectionWindow.astro`.
+4. Add a section mapping:
+
+   ```astro
+   {section.id === 'week-03' && <Week03Section />}
+   ```
+
+Keep section-specific supporting components in the same section folder. For example, the background section owns `SelectionMatrix.astro`, `SIDCard.astro`, and `TeamCard.astro` in `src/components/sections/background/`.
+
+### 2. Project Information (`src/data/project.json`)
 - **Project Name & Tagline**: Edit `name`, `shortName`, `tagline`, and `introduction`.
 - **Course Metadata**: Update course name, code, institution, academic year, and duration under `metadata`.
 - **Background Section**: Modify the narrative paragraphs, problem context, and numerical highlights under `background`.

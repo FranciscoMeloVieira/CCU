@@ -1,69 +1,164 @@
 ---
-import navigationItems from '../data/navigation.json';
+import sectionsData from '../data/sections.json';
+
+const enabledSections = sectionsData
+  .filter((sec) => sec.enabled)
+  .sort((a, b) => a.order - b.order);
 ---
 
 <!-- Desktop Floating Sidebar Navigation -->
 <nav
   id="desktop-floating-nav"
-  aria-label="Section navigation"
+  aria-label="Context-aware section navigation"
   class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col items-center gap-2 p-2 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xl shadow-slate-300/30 dark:shadow-slate-950/60 transition-all duration-300"
 >
-  <ul class="flex flex-col gap-1.5 m-0 p-0 list-none">
-    {
-      navigationItems.map((item) => (
-        <li>
-          <a
-            href={`#${item.id}`}
-            data-section={item.id}
-            class="nav-link group relative flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 rounded-xl hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-          >
-            <!-- Navigation Icon or Bullet -->
-            <span class="nav-icon-wrapper flex items-center justify-center w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-              {item.icon === 'home' && (
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-              )}
-              {item.icon === 'book-open' && (
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              )}
-              {item.icon === 'target' && (
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="9" />
-                  <circle cx="12" cy="12" r="5" />
-                  <circle cx="12" cy="12" r="1" />
-                </svg>
-              )}
-              {item.icon === 'layers' && (
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                </svg>
-              )}
-              {item.icon === 'users' && (
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              )}
-              {!['home', 'book-open', 'target', 'layers', 'users'].includes(item.icon ?? '') && (
-                <span class="w-2 h-2 rounded-full bg-slate-400 group-hover:bg-emerald-500 transition-colors" />
-              )}
-            </span>
+  <!-- Persistent "Return to Overview" Button (Shown when a section workspace is open) -->
+  <button
+    id="desktop-return-overview-btn"
+    type="button"
+    class="hidden group relative flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/50 rounded-xl transition-all mb-1 border border-emerald-200/60 dark:border-emerald-800/60 cursor-pointer"
+    title="Close section and return to overview"
+  >
+    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+    <span>Overview</span>
+  </button>
 
-            <!-- Label -->
-            <span class="tracking-wide">{item.label}</span>
-
-            <!-- Active Indicator Pill -->
-            <span
-              class="active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-emerald-500 rounded-r opacity-0 transition-opacity duration-200"
-              aria-hidden="true"
-            />
-          </a>
-        </li>
-      ))
-    }
+  <!-- OVERVIEW GROUP: When in overview-only state -->
+  <ul class="nav-context-group flex flex-col gap-1.5 m-0 p-0 list-none" data-nav-group="overview">
+    <li>
+      <a
+        href="#hero"
+        data-section="hero"
+        class="nav-link group relative flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 rounded-xl hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+      >
+        <span class="nav-icon-wrapper flex items-center justify-center w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </span>
+        <span class="tracking-wide">Overview</span>
+        <span class="active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-emerald-500 rounded-r opacity-0 transition-opacity duration-200" aria-hidden="true" />
+      </a>
+    </li>
+    <li>
+      <a
+        href="#project-hub"
+        data-section="project-hub"
+        class="nav-link group relative flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 rounded-xl hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+      >
+        <span class="nav-icon-wrapper flex items-center justify-center w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+        </span>
+        <span class="tracking-wide">Project Hub</span>
+        <span class="active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-emerald-500 rounded-r opacity-0 transition-opacity duration-200" aria-hidden="true" />
+      </a>
+    </li>
   </ul>
+
+  <!-- DYNAMIC SECTION GROUPS: Shown when specific section is open -->
+  {
+    enabledSections.map((sec) => (
+      <ul
+        class="nav-context-group hidden flex flex-col gap-1.5 m-0 p-0 list-none"
+        data-nav-group={sec.id}
+      >
+        {sec.navigation?.map((navItem) => (
+          <li>
+            <a
+              href={`#${navItem.id}`}
+              data-section={navItem.id}
+              class="nav-link group relative flex items-center gap-3 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-400 rounded-xl hover:text-slate-950 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+            >
+              <span class="nav-icon-wrapper flex items-center justify-center w-5 h-5 text-slate-500 dark:text-slate-400 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                {navItem.icon === 'book-open' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                )}
+                {navItem.icon === 'target' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="9" />
+                    <circle cx="12" cy="12" r="5" />
+                    <circle cx="12" cy="12" r="1" />
+                  </svg>
+                )}
+                {navItem.icon === 'layers' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                )}
+                {navItem.icon === 'repeat' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                )}
+                {navItem.icon === 'users' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                )}
+                {navItem.icon === 'compass' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+                  </svg>
+                )}
+                {navItem.icon === 'search' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                )}
+                {navItem.icon === 'lightbulb' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                )}
+                {navItem.icon === 'file-check' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                )}
+                {navItem.icon === 'cpu' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                    <line x1="9" y1="9" x2="15" y2="9" />
+                    <line x1="9" y1="15" x2="15" y2="15" />
+                  </svg>
+                )}
+                {navItem.icon === 'tool' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+                  </svg>
+                )}
+                {navItem.icon === 'award' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="8" r="7" />
+                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                  </svg>
+                )}
+                {navItem.icon === 'code' && (
+                  <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                )}
+                {!['book-open', 'target', 'layers', 'repeat', 'users', 'compass', 'search', 'lightbulb', 'file-check', 'cpu', 'tool', 'award', 'code'].includes(navItem.icon ?? '') && (
+                  <span class="w-2 h-2 rounded-full bg-slate-400 group-hover:bg-emerald-500 transition-colors" />
+                )}
+              </span>
+              <span class="tracking-wide">{navItem.label}</span>
+              <span class="active-indicator absolute left-0 top-1/2 -translate-y-1/2 w-1 h-4 bg-emerald-500 rounded-r opacity-0 transition-opacity duration-200" aria-hidden="true" />
+            </a>
+          </li>
+        ))}
+      </ul>
+    ))
+  }
 
   <!-- Divider -->
   <div class="w-full h-px bg-slate-200 dark:bg-slate-800 my-1"></div>
@@ -72,15 +167,13 @@ import navigationItems from '../data/navigation.json';
   <button
     id="theme-toggle-desktop"
     type="button"
-    class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+    class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
     aria-label="Toggle light/dark theme"
     title="Toggle light and dark mode"
   >
-    <!-- Sun Icon (shown in dark mode) -->
     <svg class="w-4 h-4 hidden dark:block text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
     </svg>
-    <!-- Moon Icon (shown in light mode) -->
     <svg class="w-4 h-4 block dark:hidden text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
     </svg>
@@ -95,13 +188,11 @@ import navigationItems from '../data/navigation.json';
     aria-expanded="false"
     aria-controls="mobile-nav-drawer"
     aria-label="Open mobile navigation menu"
-    class="flex items-center justify-center w-11 h-11 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+    class="flex items-center justify-center w-11 h-11 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 text-slate-700 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
   >
-    <!-- Hamburger Icon -->
     <svg id="hamburger-icon" class="w-5 h-5 block" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
     </svg>
-    <!-- Close Icon (when drawer is open) -->
     <svg id="close-icon" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
@@ -128,7 +219,7 @@ import navigationItems from '../data/navigation.json';
     <div class="flex items-center justify-between pb-6 border-b border-slate-100 dark:border-slate-800">
       <div class="flex items-center gap-2">
         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span class="text-sm font-semibold tracking-wider uppercase text-slate-900 dark:text-white">Navigation</span>
+        <span id="mobile-nav-title" class="text-sm font-semibold tracking-wider uppercase text-slate-900 dark:text-white">Navigation</span>
       </div>
       <button
         id="mobile-nav-close"
@@ -142,56 +233,75 @@ import navigationItems from '../data/navigation.json';
       </button>
     </div>
 
-    <!-- Navigation Links -->
-    <ul class="flex flex-col gap-2 mt-6 m-0 p-0 list-none">
-      {
-        navigationItems.map((item) => (
-          <li>
-            <a
-              href={`#${item.id}`}
-              data-section={item.id}
-              class="mobile-nav-link flex items-center justify-between px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
-            >
-              <div class="flex items-center gap-3">
-                <span class="text-slate-400 dark:text-slate-500">
-                  {item.icon === 'home' && (
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                    </svg>
-                  )}
-                  {item.icon === 'book-open' && (
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  )}
-                  {item.icon === 'target' && (
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <circle cx="12" cy="12" r="9" />
-                      <circle cx="12" cy="12" r="5" />
-                      <circle cx="12" cy="12" r="1" />
-                    </svg>
-                  )}
-                  {item.icon === 'layers' && (
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-                    </svg>
-                  )}
-                  {item.icon === 'users' && (
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                  )}
-                </span>
-                <span>{item.label}</span>
-              </div>
-              <svg class="w-4 h-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
-            </a>
-          </li>
-        ))
-      }
+    <!-- Persistent Mobile "Return to Overview" Link -->
+    <div id="mobile-return-overview-box" class="hidden mt-4 pb-4 border-b border-slate-100 dark:border-slate-800">
+      <button
+        id="mobile-return-overview-btn"
+        type="button"
+        class="w-full flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/70 dark:border-emerald-800/60"
+      >
+        <span class="flex items-center gap-2">
+          <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          <span>Return to Overview</span>
+        </span>
+        <span class="text-[10px] uppercase font-mono">Overview Hub</span>
+      </button>
+    </div>
+
+    <!-- OVERVIEW Mobile Group -->
+    <ul class="mobile-nav-context-group flex flex-col gap-2 mt-4 m-0 p-0 list-none" data-mobile-group="overview">
+      <li>
+        <a
+          href="#hero"
+          data-section="hero"
+          class="mobile-nav-link flex items-center justify-between px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+        >
+          <span>Overview</span>
+          <svg class="w-4 h-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </li>
+      <li>
+        <a
+          href="#project-hub"
+          data-section="project-hub"
+          class="mobile-nav-link flex items-center justify-between px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+        >
+          <span>Project Hub</span>
+          <svg class="w-4 h-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </li>
     </ul>
+
+    <!-- DYNAMIC SECTION Mobile Groups -->
+    {
+      enabledSections.map((sec) => (
+        <ul
+          class="mobile-nav-context-group hidden flex flex-col gap-2 mt-4 m-0 p-0 list-none"
+          data-mobile-group={sec.id}
+        >
+          {sec.navigation?.map((navItem) => (
+            <li>
+              <a
+                href={`#${navItem.id}`}
+                data-section={navItem.id}
+                class="mobile-nav-link flex items-center justify-between px-4 py-3 text-sm font-medium text-slate-700 dark:text-slate-300 rounded-xl hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors"
+              >
+                <span>{navItem.label}</span>
+                <svg class="w-4 h-4 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ))
+    }
   </div>
 
   <!-- Bottom Drawer Actions -->
@@ -201,7 +311,7 @@ import navigationItems from '../data/navigation.json';
       <button
         id="theme-toggle-mobile"
         type="button"
-        class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+        class="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
       >
         <span class="dark:hidden">Switch to Dark</span>
         <span class="hidden dark:inline">Switch to Light</span>
@@ -214,13 +324,12 @@ import navigationItems from '../data/navigation.json';
       </button>
     </div>
     <p class="text-[11px] text-slate-400 dark:text-slate-500 text-center">
-      7-Week Academic Project Showcase
+      Context-Aware Project Navigation
     </p>
   </div>
 </div>
 
 <script>
-  // Theme Toggle Logic
   function setupThemeToggle() {
     const desktopBtn = document.getElementById('theme-toggle-desktop');
     const mobileBtn = document.getElementById('theme-toggle-mobile');
@@ -234,7 +343,6 @@ import navigationItems from '../data/navigation.json';
     mobileBtn?.addEventListener('click', toggleTheme);
   }
 
-  // Mobile Slide-over Drawer Logic
   function setupMobileMenu() {
     const toggleBtn = document.getElementById('mobile-nav-toggle');
     const closeBtn = document.getElementById('mobile-nav-close');
@@ -242,7 +350,6 @@ import navigationItems from '../data/navigation.json';
     const backdrop = document.getElementById('mobile-nav-backdrop');
     const hamburgerIcon = document.getElementById('hamburger-icon');
     const closeIcon = document.getElementById('close-icon');
-    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
 
     let isOpen = false;
 
@@ -269,91 +376,172 @@ import navigationItems from '../data/navigation.json';
     }
 
     toggleBtn?.addEventListener('click', () => {
-      if (isOpen) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
+      if (isOpen) closeMenu();
+      else openMenu();
     });
 
     closeBtn?.addEventListener('click', closeMenu);
     backdrop?.addEventListener('click', closeMenu);
 
-    // Close on link click
-    mobileLinks.forEach((link) => {
-      link.addEventListener('click', () => {
-        closeMenu();
-      });
+    // Close on any link click
+    document.querySelectorAll('.mobile-nav-link').forEach((link) => {
+      link.addEventListener('click', closeMenu);
     });
 
-    // Close on Escape key
     window.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        closeMenu();
-      }
+      if (e.key === 'Escape' && isOpen) closeMenu();
     });
   }
 
-  // Active Section Scrollspy (IntersectionObserver)
-  function setupScrollspy() {
-    const desktopLinks = document.querySelectorAll<HTMLAnchorElement>('#desktop-floating-nav .nav-link');
-    const mobileLinks = document.querySelectorAll<HTMLAnchorElement>('.mobile-nav-link');
-    const sections = document.querySelectorAll<HTMLElement>('section[id], header[id]');
+  // Context-Aware Navigation Manager & Scrollspy
+  function setupContextualNavigation() {
+    const desktopGroups = document.querySelectorAll<HTMLElement>('.nav-context-group');
+    const mobileGroups = document.querySelectorAll<HTMLElement>('.mobile-nav-context-group');
+    const desktopReturnBtn = document.getElementById('desktop-return-overview-btn');
+    const mobileReturnBox = document.getElementById('mobile-return-overview-box');
+    const mobileReturnBtn = document.getElementById('mobile-return-overview-btn');
+    const mobileNavTitle = document.getElementById('mobile-nav-title');
 
-    if (!sections.length) return;
+    let scrollspyObserver: IntersectionObserver | null = null;
 
-    function setActive(id: string) {
-      desktopLinks.forEach((link) => {
-        const targetId = link.getAttribute('data-section');
-        const indicator = link.querySelector('.active-indicator');
-        const iconWrapper = link.querySelector('.nav-icon-wrapper');
-
-        if (targetId === id) {
-          link.classList.add('bg-emerald-50', 'text-emerald-700', 'dark:bg-emerald-950/40', 'dark:text-emerald-400');
-          link.classList.remove('text-slate-600', 'dark:text-slate-400');
-          indicator?.classList.remove('opacity-0');
-          indicator?.classList.add('opacity-100');
-          iconWrapper?.classList.add('text-emerald-600', 'dark:text-emerald-400');
+    function setContext(contextId: string) {
+      // 1. Desktop groups switch
+      desktopGroups.forEach((group) => {
+        const id = group.getAttribute('data-nav-group');
+        if (id === contextId) {
+          group.classList.remove('hidden');
         } else {
-          link.classList.remove('bg-emerald-50', 'text-emerald-700', 'dark:bg-emerald-950/40', 'dark:text-emerald-400');
-          link.classList.add('text-slate-600', 'dark:text-slate-400');
-          indicator?.classList.add('opacity-0');
-          indicator?.classList.remove('opacity-100');
-          iconWrapper?.classList.remove('text-emerald-600', 'dark:text-emerald-400');
+          group.classList.add('hidden');
         }
       });
 
-      mobileLinks.forEach((link) => {
-        const targetId = link.getAttribute('data-section');
-        if (targetId === id) {
-          link.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'font-semibold');
+      // 2. Mobile groups switch
+      mobileGroups.forEach((group) => {
+        const id = group.getAttribute('data-mobile-group');
+        if (id === contextId) {
+          group.classList.remove('hidden');
         } else {
-          link.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'font-semibold');
+          group.classList.add('hidden');
         }
       });
+
+      // 3. Return button visibility
+      if (contextId === 'overview') {
+        desktopReturnBtn?.classList.add('hidden');
+        mobileReturnBox?.classList.add('hidden');
+        if (mobileNavTitle) mobileNavTitle.textContent = 'Navigation';
+      } else {
+        desktopReturnBtn?.classList.remove('hidden');
+        mobileReturnBox?.classList.remove('hidden');
+        if (mobileNavTitle) mobileNavTitle.textContent = 'Section Nav';
+      }
+
+      // 4. Update Scrollspy targets
+      updateScrollspy(contextId);
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
+    function updateScrollspy(contextId: string) {
+      if (scrollspyObserver) {
+        scrollspyObserver.disconnect();
+      }
+
+      // Collect target sections for the active context
+      const visibleLinks = document.querySelectorAll<HTMLAnchorElement>(
+        `.nav-context-group[data-nav-group="${contextId}"] .nav-link`
+      );
+      const targetIds: string[] = [];
+      visibleLinks.forEach((link) => {
+        const id = link.getAttribute('data-section');
+        if (id) targetIds.push(id);
+      });
+
+      if (!targetIds.length) return;
+
+      const elementsToObserve: HTMLElement[] = [];
+      targetIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) elementsToObserve.push(el);
+      });
+
+      function setActive(id: string) {
+        const desktopLinks = document.querySelectorAll<HTMLAnchorElement>(
+          `.nav-context-group[data-nav-group="${contextId}"] .nav-link`
+        );
+        const mobileLinks = document.querySelectorAll<HTMLAnchorElement>(
+          `.mobile-nav-context-group[data-mobile-group="${contextId}"] .mobile-nav-link`
+        );
+
+        desktopLinks.forEach((link) => {
+          const targetId = link.getAttribute('data-section');
+          const indicator = link.querySelector('.active-indicator');
+          const iconWrapper = link.querySelector('.nav-icon-wrapper');
+
+          if (targetId === id) {
+            link.classList.add('bg-emerald-50', 'text-emerald-700', 'dark:bg-emerald-950/40', 'dark:text-emerald-400');
+            link.classList.remove('text-slate-600', 'dark:text-slate-400');
+            indicator?.classList.remove('opacity-0');
+            indicator?.classList.add('opacity-100');
+            iconWrapper?.classList.add('text-emerald-600', 'dark:text-emerald-400');
+          } else {
+            link.classList.remove('bg-emerald-50', 'text-emerald-700', 'dark:bg-emerald-950/40', 'dark:text-emerald-400');
+            link.classList.add('text-slate-600', 'dark:text-slate-400');
+            indicator?.classList.add('opacity-0');
+            indicator?.classList.remove('opacity-100');
+            iconWrapper?.classList.remove('text-emerald-600', 'dark:text-emerald-400');
           }
         });
-      },
-      {
-        rootMargin: '-30% 0px -60% 0px',
-        threshold: 0,
-      }
-    );
 
-    sections.forEach((sec) => observer.observe(sec));
+        mobileLinks.forEach((link) => {
+          const targetId = link.getAttribute('data-section');
+          if (targetId === id) {
+            link.classList.add('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'font-semibold');
+          } else {
+            link.classList.remove('text-emerald-600', 'dark:text-emerald-400', 'bg-emerald-50/70', 'dark:bg-emerald-950/30', 'font-semibold');
+          }
+        });
+      }
+
+      scrollspyObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActive(entry.target.id);
+            }
+          });
+        },
+        {
+          rootMargin: '-20% 0px -60% 0px',
+          threshold: 0,
+        }
+      );
+
+      elementsToObserve.forEach((el) => scrollspyObserver?.observe(el));
+    }
+
+    // Return to Overview click handler
+    function triggerReturnToOverview() {
+      const closeBtn = document.getElementById('window-close-btn');
+      if (closeBtn) {
+        closeBtn.click();
+      }
+    }
+
+    desktopReturnBtn?.addEventListener('click', triggerReturnToOverview);
+    mobileReturnBtn?.addEventListener('click', triggerReturnToOverview);
+
+    // Listen to custom event from SectionWindow
+    window.addEventListener('sectionContextChange', (e: any) => {
+      const sectionId = e.detail?.sectionId || 'overview';
+      setContext(sectionId);
+    });
+
+    // Default to overview context
+    setContext('overview');
   }
 
-  // Initialize on page load and view transitions
   document.addEventListener('DOMContentLoaded', () => {
     setupThemeToggle();
     setupMobileMenu();
-    setupScrollspy();
+    setupContextualNavigation();
   });
 </script>

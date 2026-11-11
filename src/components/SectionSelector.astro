@@ -1,0 +1,98 @@
+---
+import sectionsData from '../data/sections.json';
+
+// Filter enabled sections and sort by order
+const enabledSections = sectionsData
+  .filter((sec) => sec.enabled)
+  .sort((a, b) => a.order - b.order);
+---
+
+<div id="project-hub" class="section-selector-container w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-6 scroll-mt-24">
+  <!-- Hub Header -->
+  <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+    <div>
+      <div class="inline-flex items-center gap-2 text-xs font-semibold tracking-wider uppercase text-emerald-700 dark:text-emerald-400 mb-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Interactive Project Hub</span>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950 dark:text-white">
+        Project Sections &amp; Weekly Sprints
+      </h2>
+    </div>
+    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-md">
+      Hover tabs to preview phases. Click any section tab to open its integrated workspace window below.
+    </p>
+  </div>
+
+  <!-- Horizontal Section Selector Tabs Bar -->
+  <div
+    role="tablist"
+    aria-label="Project sections navigation"
+    class="section-tabs-bar flex items-stretch gap-2.5 p-2 bg-slate-100/80 dark:bg-slate-900/80 border border-slate-200/90 dark:border-slate-800 rounded-2xl shadow-sm overflow-x-auto sm:overflow-visible pb-3 sm:pb-2 scrollbar-none"
+  >
+    {
+      enabledSections.map((sec, idx) => (
+        <button
+          type="button"
+          role="tab"
+          id={`section-tab-${sec.id}`}
+          data-section-id={sec.id}
+          data-description={sec.description}
+          data-type={sec.type}
+          data-index={idx}
+          aria-selected="false"
+          aria-controls={`section-panel-${sec.id}`}
+          class:list={[
+            'section-tab-item group relative flex flex-col justify-between p-4 sm:p-5 text-left rounded-xl transition-all duration-300 ease-out outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 shrink-0 w-64 sm:w-auto sm:shrink sm:flex-1 cursor-pointer select-none',
+            'bg-white/80 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-800 hover:border-emerald-300 dark:hover:border-emerald-700/70 hover:shadow-md hover:sm:flex-[1.6]',
+          ]}
+        >
+          <!-- Active Top Accent Indicator -->
+          <div
+            class="tab-indicator-bar absolute top-0 left-0 right-0 h-1 bg-emerald-500 rounded-t-xl opacity-0 transition-opacity duration-200"
+            aria-hidden="true"
+          />
+
+          <!-- Top Row: Section Index & Type Badge -->
+          <div class="flex items-center justify-between gap-2 w-full mb-3">
+            <span class="tab-index-badge text-[11px] font-mono font-bold px-2 py-0.5 rounded transition-colors bg-slate-200/70 text-slate-700 dark:bg-slate-700 dark:text-slate-300">
+              {sec.type === 'background' ? 'START' : `0${idx + 1}`}
+            </span>
+
+            <span class="tab-type-tag text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
+              {sec.type === 'week' ? 'Weekly Sprint' : sec.type === 'background' ? 'Foundations' : 'Special Phase'}
+            </span>
+          </div>
+
+          <!-- Section Title (Bold & Clear) -->
+          <div class="w-full">
+            <h3 class="tab-title text-sm sm:text-base font-bold text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors leading-snug">
+              {sec.title}
+            </h3>
+
+            <!-- Expandable Short Description (revealed smoothly on hover/active on desktop, always visible on mobile) -->
+            <div class="tab-desc-wrapper overflow-hidden transition-all duration-300 ease-out max-h-16 opacity-85 sm:max-h-0 sm:opacity-0 group-hover:sm:max-h-24 group-hover:sm:opacity-100">
+              <p class="tab-short-desc text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                {sec.shortDescription}
+              </p>
+            </div>
+          </div>
+
+          <!-- Bottom Status Pip & Action Prompt -->
+          <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800/60 flex items-center justify-between text-[11px] w-full">
+            <div class="flex items-center gap-1.5">
+              <span class="tab-pip w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-600 transition-all duration-200" />
+              <span class="tab-status-text font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500 text-[10px]">
+                Click to Open
+              </span>
+            </div>
+
+            <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
+      ))
+    }
+  </div>
+</div>

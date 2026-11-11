@@ -1,0 +1,48 @@
+[
+  {
+    "id": "background",
+    "type": "background",
+    "title": "Project Background",
+    "shortDescription": "Context, problem space, selection matrix, SID framework, and team.",
+    "description": "Comprehensive overview of our research inquiry: investigating the invisibility of ecological impacts in ubiquitous mobility, our multi-parameter selection matrix, the Sustainable Interaction Design (SID) framework, and our research cohort.",
+    "enabled": true,
+    "order": 1,
+    "navigation": [
+      { "id": "background-context", "label": "Context", "icon": "book-open" },
+      { "id": "background-matrix", "label": "Matrix", "icon": "target" },
+      { "id": "background-objectives", "label": "Objectives", "icon": "layers" },
+      { "id": "background-framework", "label": "SID Framework", "icon": "repeat" },
+      { "id": "background-team", "label": "Team", "icon": "users" }
+    ]
+  },
+  {
+    "id": "week-01",
+    "type": "week",
+    "title": "Week 01 — Contextual Inquiry & Discovery",
+    "shortDescription": "Field observations, commuter interviews, and transit friction mapping.",
+    "description": "Field inquiry conducted across key Lisbon transit hubs. We shadowed student commuters to trace everyday friction points between Metro de Lisboa lines and shared micromobility services.",
+    "enabled": true,
+    "order": 2,
+    "navigation": [
+      { "id": "week-01-overview", "label": "Overview", "icon": "compass" },
+      { "id": "week-01-research", "label": "Field Inquiry", "icon": "search" },
+      { "id": "week-01-findings", "label": "Key Findings", "icon": "lightbulb" },
+      { "id": "week-01-deliverables", "label": "Deliverables", "icon": "file-check" }
+    ]
+  },
+  {
+    "id": "week-02",
+    "type": "week",
+    "title": "Week 02 — Conceptual Prototyping & Low-Fi Probes",
+    "shortDescription": "Translating insights into tangible ambient indicators and physical mockups.",
+    "description": "Translating discovery findings into physical interaction concepts and low-power tangible indicators.",
+    "enabled": true,
+    "order": 3,
+    "navigation": [
+      { "id": "week-02-overview", "label": "Overview", "icon": "compass" },
+      { "id": "week-02-concepts", "label": "Design Concepts", "icon": "cpu" },
+      { "id": "week-02-prototypes", "label": "Physical Mockups", "icon": "tool" },
+      { "id": "week-02-deliverables", "label": "Deliverables", "icon": "file-check" }
+    ]
+  }
+]

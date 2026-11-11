@@ -1,0 +1,111 @@
+---
+import sectionsData from '../data/sections.json';
+import BackgroundSection from './sections/background/BackgroundSection.astro';
+import Week01Section from './sections/week-01/Week01Section.astro';
+import Week02Section from './sections/week-02/Week02Section.astro';
+
+interface SectionMetadata {
+  id: string;
+  type: string;
+  title: string;
+  shortDescription: string;
+  description: string;
+  enabled: boolean;
+  order: number;
+}
+
+const enabledSections = (sectionsData as SectionMetadata[])
+  .filter((section) => section.enabled)
+  .sort((a, b) => a.order - b.order);
+---
+
+<div id="section-workspace-container" class="w-full">
+  <div id="overview-welcome-card" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+    <div class="p-8 sm:p-12 rounded-3xl border border-dashed border-slate-300 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-900/40 text-center">
+      <span class="text-xs font-semibold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">Project Workspace Hub</span>
+      <h3 class="text-2xl sm:text-3xl font-extrabold text-slate-950 dark:text-white mt-3 mb-3">Explore the project sections</h3>
+      <p class="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto mb-8">Select a section above to inspect its content.</p>
+      <button type="button" data-open-section="background" class="hub-quick-open-btn px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-slate-900 dark:bg-emerald-600">Open Project Background</button>
+    </div>
+  </div>
+
+  <div id="project-section-window" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-4 hidden opacity-0 transition-all duration-300">
+    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl shadow-xl p-6 sm:p-10 lg:p-12">
+      <div class="flex items-center justify-between pb-6 mb-8 border-b border-slate-100 dark:border-slate-800">
+        <span id="window-active-tag" class="text-xs font-semibold text-slate-600 dark:text-slate-400">Project Background</span>
+        <button type="button" id="window-close-btn" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800">Return to Overview</button>
+      </div>
+      <header class="mb-10">
+        <span id="window-header-eyebrow" class="text-xs font-semibold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">Project Section</span>
+        <h2 id="window-header-title" class="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white mt-2 mb-4">Project Background</h2>
+        <p id="window-header-short-desc" class="text-base sm:text-lg text-slate-600 dark:text-slate-300 max-w-3xl">Context, problem space, selection matrix, SID framework, and team.</p>
+        <p id="window-header-long-desc" class="text-sm sm:text-base text-slate-500 dark:text-slate-400 max-w-3xl mt-3">Comprehensive overview of our research inquiry and project foundations.</p>
+      </header>
+      <div class="section-panels-container">
+        {enabledSections.map((section) => (
+          <div id={`section-panel-${section.id}`} class="section-content-panel hidden opacity-0 transition-opacity duration-300">
+            {section.id === 'background' && <BackgroundSection />}
+            {section.id === 'week-01' && <Week01Section />}
+            {section.id === 'week-02' && <Week02Section />}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setupHub() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.section-tab-item');
+    const welcome = document.getElementById('overview-welcome-card');
+    const windowElement = document.getElementById('project-section-window');
+    const close = document.getElementById('window-close-btn');
+    const panels = document.querySelectorAll<HTMLElement>('.section-content-panel');
+    let current: string | null = null;
+
+    function notify(sectionId: string | null) {
+      window.dispatchEvent(new CustomEvent('sectionContextChange', { detail: { sectionId: sectionId || 'overview' } }));
+    }
+
+    function open(sectionId: string, scroll = true) {
+      const tab = document.getElementById(`section-tab-${sectionId}`);
+      const panel = document.getElementById(`section-panel-${sectionId}`);
+      if (!tab || !panel) return;
+      current = sectionId;
+      tabs.forEach((item) => item.setAttribute('aria-selected', String(item === tab)));
+      document.getElementById('window-active-tag')!.textContent = tab.querySelector('.tab-title')?.textContent?.trim() || '';
+      document.getElementById('window-header-title')!.textContent = tab.querySelector('.tab-title')?.textContent?.trim() || '';
+      document.getElementById('window-header-short-desc')!.textContent = tab.querySelector('.tab-short-desc')?.textContent?.trim() || '';
+      document.getElementById('window-header-long-desc')!.textContent = tab.getAttribute('data-description') || '';
+      document.getElementById('window-header-eyebrow')!.textContent = tab.getAttribute('data-type') === 'week' ? 'Weekly Development Sprint' : 'Foundations & Framework';
+      welcome?.classList.add('hidden');
+      windowElement?.classList.remove('hidden');
+      requestAnimationFrame(() => windowElement?.classList.replace('opacity-0', 'opacity-100'));
+      panels.forEach((item) => item.classList.toggle('hidden', item !== panel));
+      panel.classList.replace('opacity-0', 'opacity-100');
+      notify(sectionId);
+      if (scroll) windowElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function closeToOverview() {
+      current = null;
+      tabs.forEach((tab) => tab.setAttribute('aria-selected', 'false'));
+      panels.forEach((panel) => panel.classList.add('hidden', 'opacity-0'));
+      windowElement?.classList.add('hidden', 'opacity-0');
+      welcome?.classList.remove('hidden');
+      notify(null);
+    }
+
+    tabs.forEach((tab) => tab.addEventListener('click', () => {
+      const id = tab.dataset.sectionId;
+      if (id) current === id ? closeToOverview() : open(id);
+    }));
+    close?.addEventListener('click', closeToOverview);
+    document.querySelectorAll<HTMLButtonElement>('.hub-quick-open-btn').forEach((button) => button.addEventListener('click', () => {
+      if (button.dataset.openSection) open(button.dataset.openSection);
+    }));
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupHub);
+  else setupHub();
+</script>

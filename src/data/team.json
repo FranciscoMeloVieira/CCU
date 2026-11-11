@@ -13,12 +13,12 @@
     }
   },
   {
-    "id": "second",
-    "name": "second",
+    "id": "rakhee-patel",
+    "name": "Rakhee Patel",
     "role": "role",
     "bio": "Default bio",
     "avatar": "",
-    "initials": "AC",
+    "initials": "RP",
     "links": {
       "github": "",
       "linkedin": "",
@@ -26,12 +26,12 @@
     }
   },
   {
-    "id": "third",
-    "name": "third",
+    "id": "jetze-eveleens",
+    "name": "Jetze Eveleens",
     "role": "role",
     "bio": "Default bio",
     "avatar": "",
-    "initials": "ER",
+    "initials": "JE",
     "links": {
       "github": "",
       "linkedin": "",
