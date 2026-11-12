@@ -18,9 +18,9 @@
   {
     "id": "week-01",
     "type": "week",
-    "title": "Week 01 — Contextual Inquiry & Discovery",
-    "shortDescription": "Field observations, commuter interviews, and transit friction mapping.",
-    "description": "Field inquiry conducted across key Lisbon transit hubs. We shadowed student commuters to trace everyday friction points between Metro de Lisboa lines and shared micromobility services.",
+    "title": "Week 01 — Research Synthesis & Field Inquiry",
+    "shortDescription": "Field inquiry of users and stakeholders, and synthesis of research findings into actionable insights.",
+    "description": "",
     "enabled": true,
     "order": 2,
     "navigation": [

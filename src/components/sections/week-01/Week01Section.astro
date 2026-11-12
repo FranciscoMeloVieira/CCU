@@ -13,20 +13,14 @@ interface Interview {
 }
 
 const interviews = week01Data.interviews as Interview[];
-const interviewFiles = import.meta.glob('../../../data/week01/interviews/*.pdf', {
-  eager: true,
-  import: 'default',
-  query: '?url',
-}) as Record<string, string>;
-
 
 const userInterviews = interviews.filter((interview) => interview.category === 'user');
 const stakeholderInterviews = interviews.filter((interview) => interview.category === 'stakeholder');
 const navigation = sectionsData.find((section) => section.id === 'week-01')?.navigation || [];
+const baseUrl = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
 
 const getPdfUrl = (fileName: string) => {
-  const filePath = `../../../data/week01/interviews/${fileName}`;
-  return interviewFiles[filePath];
+  return `${baseUrl}interviews/${fileName}`;
 };
 ---
 

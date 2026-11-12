@@ -1,3 +1,17 @@
 {
-  "interviews": []
+  "interviews": [{
+      "id": "user-01",
+      "category": "user",
+      "title": "User Interview 01",
+      "description": "",
+      "file": "Interview_AnaMelo.pdf"
+    },
+    {
+      "id": "user-02",
+      "category": "user",
+      "title": "User Interview 02",
+      "description": "",
+      "file": "Interview_FranciscoVieira.pdf"
+    }
+  ]
 }
